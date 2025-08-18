@@ -12,4 +12,14 @@ public class WitherAbility implements ToolAbility {
         victim.addEffect(new MobEffectInstance(MobEffects.WITHER, 100, 1));
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof WitherAbility;
+    }
+
+    @Override
+    public int hashCode() {
+        return WitherAbility.class.hashCode();
+    }
 }

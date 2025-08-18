@@ -1,9 +1,10 @@
 package earth.terrarium.lookinsharp.api.traits;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 @FunctionalInterface
 public interface AttributeModificationFunction {
-    void modifyAttribute(Attribute attribute, AttributeModifier modifier);
+    void modifyAttribute(Holder<Attribute> attribute, AttributeModifier modifier);
 }

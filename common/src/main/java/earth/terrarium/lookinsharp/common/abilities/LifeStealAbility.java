@@ -2,8 +2,6 @@ package earth.terrarium.lookinsharp.common.abilities;
 
 import earth.terrarium.lookinsharp.api.abilities.ToolAbility;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 
 public class LifeStealAbility implements ToolAbility {
@@ -13,5 +11,15 @@ public class LifeStealAbility implements ToolAbility {
             attacker.heal(amount / 4);
         }
         return true;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof LifeStealAbility;
+    }
+
+    @Override
+    public int hashCode() {
+        return LifeStealAbility.class.hashCode();
     }
 }

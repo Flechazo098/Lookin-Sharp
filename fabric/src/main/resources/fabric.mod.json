@@ -6,9 +6,8 @@
   "description": "",
   "authors": [
     "Joosh",
+    "Flechazo",
     "CodexAdrian"
-  ],
-  "contributors": [
   ],
   "contact": {
     "website": "https://www.curseforge.com/minecraft/mc-mods/lookin-sharp",
@@ -16,15 +15,14 @@
     "issues": "https://github.com/terrarium-earth/lookin-sharp/issues"
   },
   "license": "Terrarium Licence",
-  "icon": "icon.png",
+  "icon": "assets/lookinsharp/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "earth.terrarium.lookinsharp.fabric.LookinSharpFabric",
-      "earth.terrarium.lookinsharp.LookinSharp::postInit"
+      "earth.terrarium.lookinsharp.fabric.LookinSharpFabric"
     ],
     "client": [
-      "earth.terrarium.lookinsharp.client.fabric.LookinSharpClientFabric"
+      "earth.terrarium.lookinsharp.fabric.client.LookinSharpFabricClient"
     ],
     "jei_mod_plugin": [
       "earth.terrarium.lookinsharp.compat.jei.JEIPlugin"
@@ -34,12 +32,17 @@
     ]
   },
   "mixins": [
-    "lookinsharp.mixins.json",
-    "lookinsharp-common.mixins.json"
+    "lookinsharp.mixins.json"
   ],
   "depends": {
-    "fabric": "*",
-    "minecraft": ">=1.20.1",
-    "resourcefullib": ">=${resourcefullib_version}"
+    "fabricloader": "*",
+    "minecraft": "~1.21.1",
+    "java": "*",
+    "oelib": ">=0.0.4-beta",
+    "architectury": "*",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
   }
 }

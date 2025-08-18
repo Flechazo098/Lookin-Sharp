@@ -1,10 +1,12 @@
 package earth.terrarium.lookinsharp.common.registry;
 
-import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
-import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public enum MaterialTypes {
     WOODEN(Tiers.WOOD),
@@ -16,11 +18,11 @@ public enum MaterialTypes {
 
     public static final MaterialTypes[] VALUES = values();
 
-    public final ResourcefulRegistry<Item> items;
+    public final List<RegistrySupplier<Item>> items;
     public final Tier tier;
 
     MaterialTypes(Tier tier) {
-        this.items = ResourcefulRegistries.create(ModItems.SWORDS);
+        this.items = new ArrayList<>();
         this.tier = tier;
     }
 }

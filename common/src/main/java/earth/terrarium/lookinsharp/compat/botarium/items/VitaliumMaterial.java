@@ -1,11 +1,15 @@
 package earth.terrarium.lookinsharp.compat.botarium.items;
 
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 public class VitaliumMaterial implements Tier {
     public static final VitaliumMaterial INSTANCE = new VitaliumMaterial();
+
     @Override
     public int getUses() {
         return 1000;
@@ -22,8 +26,8 @@ public class VitaliumMaterial implements Tier {
     }
 
     @Override
-    public int getLevel() {
-        return 3;
+    public TagKey<Block> getIncorrectBlocksForDrops() {
+        return BlockTags.INCORRECT_FOR_DIAMOND_TOOL;
     }
 
     @Override

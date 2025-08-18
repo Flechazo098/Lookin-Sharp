@@ -12,4 +12,14 @@ public class PoisonAbility implements ToolAbility {
         victim.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 1));
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PoisonAbility;
+    }
+
+    @Override
+    public int hashCode() {
+        return PoisonAbility.class.hashCode();
+    }
 }

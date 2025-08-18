@@ -1,36 +1,36 @@
 package earth.terrarium.lookinsharp.common.recipe;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.teamresourceful.resourcefullib.common.codecs.recipes.IngredientCodec;
-import com.teamresourceful.resourcefullib.common.recipe.CodecRecipe;
 import earth.terrarium.lookinsharp.LookinSharp;
 import earth.terrarium.lookinsharp.api.abilities.ToolAbility;
 import earth.terrarium.lookinsharp.api.abilities.ToolAbilityManager;
 import earth.terrarium.lookinsharp.common.items.BaseSword;
-import earth.terrarium.lookinsharp.common.registry.MaterialTypes;
 import earth.terrarium.lookinsharp.common.registry.ModRecipes;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public record ArtifactAttachmentRecipe(ResourceLocation id, Ingredient artifactIngredient, Ingredient addonIngredient, ToolAbility result) implements CodecRecipe<Container>, SmithingRecipe {
-    public static Codec<? extends SmithingRecipe> codec(ResourceLocation id) {
-        return RecordCodecBuilder.<ArtifactAttachmentRecipe>create(instance -> instance.group(
-                RecordCodecBuilder.point(id),
-                IngredientCodec.CODEC.fieldOf("artifact").forGetter(ArtifactAttachmentRecipe::artifactIngredient),
-                IngredientCodec.CODEC.fieldOf("addon").forGetter(ArtifactAttachmentRecipe::addonIngredient),
-                ToolAbilityManager.CODEC.fieldOf("result").forGetter(ArtifactAttachmentRecipe::result)
-        ).apply(instance, ArtifactAttachmentRecipe::new));
+public class ArtifactAttachmentRecipe implements SmithingRecipe {
+    private final ResourceLocation type;
+    private final Ingredient artifactIngredient;
+    private final Ingredient addonIngredient;
+    private final ToolAbility result;
+
+    public ArtifactAttachmentRecipe(ResourceLocation type, Ingredient artifactIngredient, Ingredient addonIngredient, ToolAbility result) {
+        this.type = type;
+        this.artifactIngredient = artifactIngredient;
+        this.addonIngredient = addonIngredient;
+        this.result = result;
     }
 
     @Override
@@ -49,13 +49,15 @@ public record ArtifactAttachmentRecipe(ResourceLocation id, Ingredient artifactI
     }
 
     @Override
-    public boolean matches(Container container, Level level) {
-        return artifactIngredient.test(container.getItem(0)) && container.getItem(1).getItem() instanceof BaseSword && addonIngredient.test(container.getItem(2));
+    public boolean matches(SmithingRecipeInput input, Level level) {
+        return artifactIngredient.test(input.getItem(0)) &&
+                input.getItem(1).getItem() instanceof BaseSword &&
+                addonIngredient.test(input.getItem(2));
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess access) {
-        ItemStack sword = container.getItem(1);
+    public @NotNull ItemStack assemble(@NotNull SmithingRecipeInput input, @NotNull HolderLookup.Provider provider) {
+        ItemStack sword = input.getItem(1);
         ItemStack result = sword.copy();
         if (result.getItem() instanceof BaseSword swordItem) {
             swordItem.setAbility(result, this.result);
@@ -70,12 +72,12 @@ public record ArtifactAttachmentRecipe(ResourceLocation id, Ingredient artifactI
 
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return CodecRecipe.super.canCraftInDimensions(pWidth, pHeight);
+        return pWidth >= 3 && pHeight >= 1;
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(@NotNull RegistryAccess access) {
-        ItemStack stack = new ItemStack(BuiltInRegistries.ITEM.get(new ResourceLocation(LookinSharp.MOD_ID, "iron_sword")));
+    public @NotNull ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
+        ItemStack stack = new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(LookinSharp.MOD_ID, "iron_sword")));
         if (stack.getItem() instanceof BaseSword sword) {
             sword.setAbility(stack, result);
         }
@@ -85,5 +87,56 @@ public record ArtifactAttachmentRecipe(ResourceLocation id, Ingredient artifactI
     @Override
     public boolean isSpecial() {
         return false;
+    }
+
+    public Ingredient getArtifactIngredient() {
+        return artifactIngredient;
+    }
+
+    public Ingredient getAddonIngredient() {
+        return addonIngredient;
+    }
+
+    public ToolAbility getResult() {
+        return result;
+    }
+
+    public static class Serializer implements RecipeSerializer<ArtifactAttachmentRecipe> {
+        public static final MapCodec<ArtifactAttachmentRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ResourceLocation.CODEC.fieldOf("type").forGetter(recipe -> recipe.type),
+                Ingredient.CODEC.fieldOf("artifact").forGetter(ArtifactAttachmentRecipe::getArtifactIngredient),
+                Ingredient.CODEC.fieldOf("addon").forGetter(ArtifactAttachmentRecipe::getAddonIngredient),
+                ToolAbilityManager.CODEC.fieldOf("result").forGetter(ArtifactAttachmentRecipe::getResult)
+        ).apply(instance, ArtifactAttachmentRecipe::new));
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactAttachmentRecipe> STREAM_CODEC = StreamCodec.of(
+                Serializer::toNetwork,
+                Serializer::fromNetwork
+        );
+
+        @Override
+        public @NotNull MapCodec<ArtifactAttachmentRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, ArtifactAttachmentRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        private static void toNetwork(RegistryFriendlyByteBuf buffer, ArtifactAttachmentRecipe recipe) {
+            buffer.writeResourceLocation(recipe.type);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.artifactIngredient);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.addonIngredient);
+            ToolAbilityManager.STREAM_CODEC.encode(buffer, recipe.result);
+        }
+
+        private static ArtifactAttachmentRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+            ResourceLocation id = buffer.readResourceLocation();
+            Ingredient artifactIngredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            Ingredient addonIngredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            ToolAbility result = ToolAbilityManager.STREAM_CODEC.decode(buffer);
+            return new ArtifactAttachmentRecipe(id, artifactIngredient, addonIngredient, result);
+        }
     }
 }

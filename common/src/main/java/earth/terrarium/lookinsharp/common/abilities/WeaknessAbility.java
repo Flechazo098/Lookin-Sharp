@@ -12,4 +12,14 @@ public class WeaknessAbility implements ToolAbility {
         victim.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 1));
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof WeaknessAbility;
+    }
+
+    @Override
+    public int hashCode() {
+        return WeaknessAbility.class.hashCode();
+    }
 }

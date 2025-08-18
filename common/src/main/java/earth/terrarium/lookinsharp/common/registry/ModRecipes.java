@@ -1,28 +1,23 @@
 package earth.terrarium.lookinsharp.common.registry;
 
-import com.mojang.serialization.Codec;
-import com.teamresourceful.resourcefullib.common.recipe.CodecRecipeSerializer;
-import com.teamresourceful.resourcefullib.common.recipe.CodecRecipeType;
-import com.teamresourceful.resourcefullib.common.registry.RegistryEntry;
-import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistries;
-import com.teamresourceful.resourcefullib.common.registry.ResourcefulRegistry;
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
 import earth.terrarium.lookinsharp.LookinSharp;
 import earth.terrarium.lookinsharp.common.recipe.ArtifactAttachmentRecipe;
 import earth.terrarium.lookinsharp.common.recipe.ForgingRecipe;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SmithingRecipe;
-
-import java.util.function.Function;
 
 public class ModRecipes {
-    public static final ResourcefulRegistry<RecipeType<?>> RECIPE_TYPES = ResourcefulRegistries.create(BuiltInRegistries.RECIPE_TYPE, LookinSharp.MOD_ID);
-    public static final ResourcefulRegistry<RecipeSerializer<?>> RECIPE_SERIALIZERS = ResourcefulRegistries.create(BuiltInRegistries.RECIPE_SERIALIZER, LookinSharp.MOD_ID);
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(LookinSharp.MOD_ID, Registries.RECIPE_TYPE);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(LookinSharp.MOD_ID, Registries.RECIPE_SERIALIZER);
 
-    public static final RegistryEntry<RecipeType<ForgingRecipe>> FORGING = RECIPE_TYPES.register("forging", () -> CodecRecipeType.of("forging"));
-    public static final RegistryEntry<RecipeSerializer<?>> FORGING_SERIALIZER = RECIPE_SERIALIZERS.register("forging", () -> new CodecRecipeSerializer<>(FORGING.get(), ForgingRecipe::codec));
+    public static final RegistrySupplier<RecipeType<ForgingRecipe>> FORGING =
+            RECIPE_TYPES.register("forging", () -> RecipeType.register("forging"));
 
-    public static final RegistryEntry<RecipeSerializer<?>> ARTIFACT_ATTACHMENT_SERIALIZER = RECIPE_SERIALIZERS.register("artifact_attachment", () -> new CodecRecipeSerializer<>(null, ArtifactAttachmentRecipe::codec));
+    public static final RegistrySupplier<RecipeSerializer<ForgingRecipe>> FORGING_SERIALIZER = RECIPE_SERIALIZERS.register("forging", ForgingRecipe.Serializer::new);
+
+    public static final RegistrySupplier<RecipeSerializer<ArtifactAttachmentRecipe>> ARTIFACT_ATTACHMENT_SERIALIZER = RECIPE_SERIALIZERS.register("artifact_attachment", ArtifactAttachmentRecipe.Serializer::new);
+
 }

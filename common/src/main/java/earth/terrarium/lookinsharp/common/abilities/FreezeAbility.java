@@ -12,4 +12,14 @@ public class FreezeAbility implements ToolAbility {
         victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 4));
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof FreezeAbility;
+    }
+
+    @Override
+    public int hashCode() {
+        return FreezeAbility.class.hashCode();
+    }
 }

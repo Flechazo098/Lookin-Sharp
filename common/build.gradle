@@ -1,64 +1,19 @@
 architectury {
-    common(rootProject.enabled_platforms.split(","))
+    common rootProject.enabled_platforms.split(',')
 }
 
 dependencies {
+    // We depend on Fabric Loader here to use the Fabric @Environment annotations,
+    // which get remapped to the correct annotations on each platform.
+    // Do NOT use other classes from Fabric Loader.
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
-    modCompileOnly "tech.thatgravyboat:commonats:1.0"
 
     modCompileOnly "mezz.jei:jei-$rootProject.minecraft_version-common-api:$rootProject.jei_version"
     modRuntimeOnly "mezz.jei:jei-$rootProject.minecraft_version-common:$rootProject.jei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rootProject.rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin:$rootProject.rei_version"
 
-    modApi "com.teamresourceful.resourcefullib:resourcefullib-common-$minecraft_version:$rootProject.resourcefullib_version"
-    modApi "earth.terrarium:botarium-common-$minecraft_version:$rootProject.botarium_version"
-}
+    modImplementation "curse.maven:oelib-1319210:6882793"
 
-processResources {
-    inputs.property "version", rootProject.version
-    inputs.property "resourcefullib_version", rootProject.resourcefullib_version
-    inputs.property "resourcefulconfig_version", rootProject.resourcefulconfig_version
-}
-
-def ENV = System.getenv()
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact remapJar
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-
-            artifactId = "$rootProject.mod_id-common-$rootProject.minecraft_version"
-
-            pom {
-                name = 'ModId'
-                description = ''
-                url = 'https://github.com/terrarium-earth/ModId'
-
-                scm {
-                    connection = 'git:https://github.com/terrarium-earth/ModId.git'
-                    developerConnection = 'git:https://github.com/terrarium-earth/ModId.git'
-                    url = 'https://github.com/terrarium-earth/ModId'
-                }
-
-                licenses {
-                    license {
-                        name = 'Terrarium Licence'
-                    }
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            url = "https://maven.resourcefulbees.com/repository/terrarium/"
-            credentials {
-                username ENV.MAVEN_USER
-                password ENV.MAVEN_PASS
-            }
-        }
-    }
+    modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
 }

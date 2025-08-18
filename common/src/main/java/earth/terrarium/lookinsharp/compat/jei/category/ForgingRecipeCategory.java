@@ -1,5 +1,6 @@
 package earth.terrarium.lookinsharp.compat.jei.category;
 
+import earth.terrarium.lookinsharp.LookinSharp;
 import earth.terrarium.lookinsharp.common.registry.ModItems;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -9,7 +10,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -18,8 +18,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ForgingRecipeCategory implements IRecipeCategory<ForgingRecipeCategory.FlattenedRecipe> {
 
-    public static final RecipeType<FlattenedRecipe> FORGING = new RecipeType<>(new ResourceLocation("forging"), FlattenedRecipe.class);
-    private static final ResourceLocation TEXTURE = new ResourceLocation("jei", "textures/jei/gui/gui_vanilla.png");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(LookinSharp.MOD_ID, "forging");
+    public static final RecipeType<FlattenedRecipe> FORGING = new RecipeType<>(UID, FlattenedRecipe.class);
+    private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/gui/container/stonecutter.png");
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -39,6 +40,8 @@ public class ForgingRecipeCategory implements IRecipeCategory<ForgingRecipeCateg
         return Component.translatable("block.lookinsharp.forging_station");
     }
 
+
+    @SuppressWarnings("removal")
     @Override
     public @NotNull IDrawable getBackground() {
         return background;

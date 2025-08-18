@@ -1,7 +1,9 @@
 package earth.terrarium.lookinsharp.api;
 
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 public class WrappedTier implements Tier {
@@ -35,8 +37,8 @@ public class WrappedTier implements Tier {
     }
 
     @Override
-    public int getLevel() {
-        return tier.getLevel();
+    public TagKey<Block> getIncorrectBlocksForDrops() {
+        return tier.getIncorrectBlocksForDrops();
     }
 
     @Override

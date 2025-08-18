@@ -4,7 +4,6 @@ import earth.terrarium.lookinsharp.common.menu.ForgingStationContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
@@ -31,12 +30,14 @@ public class ForgingStationBlock extends Block {
             Block.box(0, 12, 5, 4, 16, 11),
             Block.box(12, 10, 4, 16, 16, 12)
     );
+
     public ForgingStationBlock() {
-        super(Properties.copy(Blocks.ANVIL));
+        super(Properties.ofFullCopy(Blocks.ANVIL));
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos,
+                                               Player player, BlockHitResult blockHitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
@@ -44,6 +45,7 @@ public class ForgingStationBlock extends Block {
         player.awardStat(Stats.INTERACT_WITH_STONECUTTER);
         return InteractionResult.CONSUME;
     }
+
 
     @Nullable
     @Override

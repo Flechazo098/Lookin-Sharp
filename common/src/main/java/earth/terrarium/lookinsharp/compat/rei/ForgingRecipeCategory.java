@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ForgingRecipeCategory implements DisplayCategory<ForgingRecipeCategory.FlattenedRecipe> {
-    public static final CategoryIdentifier<FlattenedRecipe> ID = CategoryIdentifier.of(new ResourceLocation("lookinsharp", "forging"));
+    public static final CategoryIdentifier<FlattenedRecipe> ID = CategoryIdentifier.of(ResourceLocation.fromNamespaceAndPath("lookinsharp", "forging"));
     private final ItemStack icon;
 
     public ForgingRecipeCategory() {
@@ -48,8 +48,8 @@ public class ForgingRecipeCategory implements DisplayCategory<ForgingRecipeCateg
         widgets.add(Widgets.createRecipeBase(bounds));
         widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 4)));
         widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 5)));
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 5)).entries(recipeDisplay.getInputEntries().get(0)).markInput());
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 5)).entries(recipeDisplay.getOutputEntries().get(0)).disableBackground().markOutput());
+        widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 5)).entries(recipeDisplay.getInputEntries().getFirst()).markInput());
+        widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 5)).entries(recipeDisplay.getOutputEntries().getFirst()).disableBackground().markOutput());
         return widgets;
     }
 
@@ -64,9 +64,9 @@ public class ForgingRecipeCategory implements DisplayCategory<ForgingRecipeCateg
     }
 
     public record FlattenedRecipe(
-        Ingredient tag,
-        ItemStack result,
-        CategoryIdentifier<FlattenedRecipe> category
+            Ingredient tag,
+            ItemStack result,
+            CategoryIdentifier<FlattenedRecipe> category
     ) implements Display {
         @Override
         public List<EntryIngredient> getInputEntries() {

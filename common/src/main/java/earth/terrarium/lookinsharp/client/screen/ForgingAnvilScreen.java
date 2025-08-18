@@ -15,7 +15,12 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ForgingAnvilScreen extends AbstractContainerScreen<ForgingStationContainer> {
-    private static final ResourceLocation BG_LOCATION = new ResourceLocation("textures/gui/container/stonecutter.png");
+    private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller");
+    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller_disabled");
+    private static final ResourceLocation RECIPE_SELECTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_selected");
+    private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_highlighted");
+    private static final ResourceLocation RECIPE_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe");
+    private static final ResourceLocation BG_LOCATION = ResourceLocation.withDefaultNamespace("textures/gui/container/stonecutter.png");
     private static final int SCROLLER_WIDTH = 12;
     private static final int SCROLLER_HEIGHT = 15;
     private static final int RECIPES_COLUMNS = 4;
@@ -44,12 +49,12 @@ public class ForgingAnvilScreen extends AbstractContainerScreen<ForgingStationCo
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float f, int i, int j) {
-        this.renderBackground(guiGraphics);
         int k = this.leftPos;
         int l = this.topPos;
         guiGraphics.blit(BG_LOCATION, k, l, 0, 0, this.imageWidth, this.imageHeight);
-        int m = (int)(41.0f * this.scrollOffs);
-        guiGraphics.blit(BG_LOCATION, k + 119, l + 15 + m, 176 + (this.isScrollBarActive() ? 0 : 12), 0, 12, 15);
+        int m = (int) (41.0F * this.scrollOffs);
+        ResourceLocation resourceLocation = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
+        guiGraphics.blitSprite(resourceLocation, k + 119, l + 15 + m, 12, 15);
         int n = this.leftPos + 52;
         int o = this.topPos + 14;
         int p = this.startIndex + 12;
@@ -69,8 +74,9 @@ public class ForgingAnvilScreen extends AbstractContainerScreen<ForgingStationCo
                 int o = n - this.startIndex;
                 int p = k + o % 4 * 16;
                 int q = l + o / 4 * 18 + 2;
-                if (i < p || i >= p + 16 || j < q || j >= q + 18) continue;
-                guiGraphics.renderTooltip(this.font, list.get(n), i, j);
+                if (i >= p && i < p + 16 && j >= q && j < q + 18) {
+                    guiGraphics.renderTooltip(this.font, list.get(n), i, j);
+                }
             }
         }
     }
@@ -81,13 +87,15 @@ public class ForgingAnvilScreen extends AbstractContainerScreen<ForgingStationCo
             int p = k + o % 4 * 16;
             int q = o / 4;
             int r = l + q * 18 + 2;
-            int s = this.imageHeight;
+            ResourceLocation resourceLocation;
             if (n == menu.getSelectedRecipeIndex()) {
-                s += 18;
+                resourceLocation = RECIPE_SELECTED_SPRITE;
             } else if (i >= p && j >= r && i < p + 16 && j < r + 18) {
-                s += 36;
+                resourceLocation = RECIPE_HIGHLIGHTED_SPRITE;
+            } else {
+                resourceLocation = RECIPE_SPRITE;
             }
-            guiGraphics.blit(BG_LOCATION, p, r - 1, 0, s, 16, 18);
+            guiGraphics.blitSprite(resourceLocation, p, r - 1, 16, 18);
         }
     }
 
@@ -111,16 +119,17 @@ public class ForgingAnvilScreen extends AbstractContainerScreen<ForgingStationCo
             int l = this.startIndex + 12;
             for (int m = this.startIndex; m < l; ++m) {
                 int n = m - this.startIndex;
-                double f = d - (double)(j + n % 4 * 16);
-                double g = e - (double)(k + n / 4 * 18);
-                if (!(f >= 0.0) || !(g >= 0.0) || !(f < 16.0) || !(g < 18.0) || !menu.clickMenuButton(this.minecraft.player, m)) continue;
-                Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0f));
-                this.minecraft.gameMode.handleInventoryButtonClick(menu.containerId, m);
-                return true;
+                double f = d - (double) (j + n % 4 * 16);
+                double g = e - (double) (k + n / 4 * 18);
+                if (f >= 0.0 && g >= 0.0 && f < 16.0 && g < 18.0 && menu.clickMenuButton(this.minecraft.player, m)) {
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                    this.minecraft.gameMode.handleInventoryButtonClick(menu.containerId, m);
+                    return true;
+                }
             }
             j = this.leftPos + 119;
             k = this.topPos + 9;
-            if (d >= (double)j && d < (double)(j + 12) && e >= (double)k && e < (double)(k + 54)) {
+            if (d >= (double) j && d < (double) (j + 12) && e >= (double) k && e < (double) (k + 54)) {
                 this.scrolling = true;
             }
         }
@@ -132,21 +141,21 @@ public class ForgingAnvilScreen extends AbstractContainerScreen<ForgingStationCo
         if (this.scrolling && this.isScrollBarActive()) {
             int j = this.topPos + 14;
             int k = j + 54;
-            this.scrollOffs = ((float)e - (float)j - 7.5f) / ((float)(k - j) - 15.0f);
-            this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0f, 1.0f);
-            this.startIndex = (int)((double)(this.scrollOffs * (float)this.getOffscreenRows()) + 0.5) * 4;
+            this.scrollOffs = ((float) e - (float) j - 7.5F) / ((float) (k - j) - 15.0F);
+            this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
+            this.startIndex = (int) ((double) (this.scrollOffs * (float) this.getOffscreenRows()) + 0.5) * 4;
             return true;
         }
         return super.mouseDragged(d, e, i, f, g);
     }
 
     @Override
-    public boolean mouseScrolled(double d, double e, double f) {
+    public boolean mouseScrolled(double d, double e, double f, double h) {
         if (this.isScrollBarActive()) {
             int i = this.getOffscreenRows();
-            float g = (float)f / (float)i;
-            this.scrollOffs = Mth.clamp(this.scrollOffs - g, 0.0f, 1.0f);
-            this.startIndex = (int)((double)(this.scrollOffs * (float)i) + 0.5) * 4;
+            float g = (float) h / (float) i;
+            this.scrollOffs = Mth.clamp(this.scrollOffs - g, 0.0F, 1.0F);
+            this.startIndex = (int) ((double) (this.scrollOffs * (float) i) + 0.5) * 4;
         }
         return true;
     }
@@ -162,9 +171,8 @@ public class ForgingAnvilScreen extends AbstractContainerScreen<ForgingStationCo
     private void containerChanged() {
         this.displayRecipes = menu.hasInputItem();
         if (!this.displayRecipes) {
-            this.scrollOffs = 0.0f;
+            this.scrollOffs = 0.0F;
             this.startIndex = 0;
         }
     }
 }
-

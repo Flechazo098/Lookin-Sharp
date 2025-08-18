@@ -1,0 +1,38 @@
+{
+  "type": "lookinsharp:forging",
+  "input": {
+    "item": "minecraft:golden_sword"
+  },
+  "results": [
+    {
+      "id": "lookinsharp:golden_sword"
+    },
+    {
+      "id": "lookinsharp:golden_broadsword"
+    },
+    {
+      "id": "lookinsharp:golden_cutlass"
+    },
+    {
+      "id": "lookinsharp:golden_shortsword"
+    },
+    {
+      "id": "lookinsharp:golden_gladius"
+    },
+    {
+      "id": "lookinsharp:golden_cleaver"
+    },
+    {
+      "id": "lookinsharp:golden_honed_sword"
+    },
+    {
+      "id": "lookinsharp:golden_greatsword"
+    },
+    {
+      "id": "lookinsharp:golden_scythe"
+    },
+    {
+      "id": "lookinsharp:golden_spear"
+    }
+  ]
+}

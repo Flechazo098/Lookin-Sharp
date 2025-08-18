@@ -1,0 +1,38 @@
+{
+  "type": "lookinsharp:forging",
+  "input": {
+    "item": "minecraft:diamond_sword"
+  },
+  "results": [
+    {
+      "id": "lookinsharp:diamond_sword"
+    },
+    {
+      "id": "lookinsharp:diamond_broadsword"
+    },
+    {
+      "id": "lookinsharp:diamond_cutlass"
+    },
+    {
+      "id": "lookinsharp:diamond_shortsword"
+    },
+    {
+      "id": "lookinsharp:diamond_gladius"
+    },
+    {
+      "id": "lookinsharp:diamond_cleaver"
+    },
+    {
+      "id": "lookinsharp:diamond_honed_sword"
+    },
+    {
+      "id": "lookinsharp:diamond_greatsword"
+    },
+    {
+      "id": "lookinsharp:diamond_scythe"
+    },
+    {
+      "id": "lookinsharp:diamond_spear"
+    }
+  ]
+}

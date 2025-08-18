@@ -1,0 +1,10 @@
+{
+  "type": "lookinsharp:artifact_attachment",
+  "artifact": {
+    "item": "lookinsharp:withering_artifact"
+  },
+  "addon": {
+    "item": "minecraft:wither_skeleton_skull"
+  },
+  "result": "lookinsharp:wither"
+}

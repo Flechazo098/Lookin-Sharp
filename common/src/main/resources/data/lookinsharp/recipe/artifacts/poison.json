@@ -1,0 +1,10 @@
+{
+  "type": "lookinsharp:artifact_attachment",
+  "artifact": {
+    "item": "lookinsharp:deadly_artifact"
+  },
+  "addon": {
+    "item": "minecraft:poisonous_potato"
+  },
+  "result": "lookinsharp:poison"
+}

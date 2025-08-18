@@ -1,0 +1,10 @@
+{
+  "type": "lookinsharp:artifact_attachment",
+  "artifact": {
+    "item": "lookinsharp:sticky_artifact"
+  },
+  "addon": {
+    "item": "minecraft:slime_block"
+  },
+  "result": "lookinsharp:slowness"
+}

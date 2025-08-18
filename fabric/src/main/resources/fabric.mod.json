@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "lookinsharp",
+  "version": "${version}",
+  "name": "Lookin' Sharp!",
+  "description": "",
+  "authors": [
+    "Joosh",
+    "Flechazo",
+    "CodexAdrian"
+  ],
+  "contact": {
+    "website": "https://www.curseforge.com/minecraft/mc-mods/lookin-sharp",
+    "repo": "https://github.com/terrarium-earth/lookin-sharp",
+    "issues": "https://github.com/terrarium-earth/lookin-sharp/issues"
+  },
+  "license": "Terrarium Licence",
+  "icon": "assets/lookinsharp/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "earth.terrarium.lookinsharp.fabric.LookinSharpFabric"
+    ],
+    "client": [
+      "earth.terrarium.lookinsharp.fabric.client.LookinSharpFabricClient"
+    ],
+    "jei_mod_plugin": [
+      "earth.terrarium.lookinsharp.compat.jei.JEIPlugin"
+    ],
+    "rei_client": [
+      "earth.terrarium.lookinsharp.compat.rei.REIPlugin"
+    ]
+  },
+  "mixins": [
+    "lookinsharp.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": "~1.21.1",
+    "java": "*",
+    "oelib": ">=0.0.4-beta",
+    "architectury": "*",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

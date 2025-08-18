@@ -1,0 +1,10 @@
+{
+  "type": "lookinsharp:artifact_attachment",
+  "artifact": {
+    "item": "lookinsharp:tonic_artifact"
+  },
+  "addon": {
+    "item": "minecraft:blaze_rod"
+  },
+  "result": "lookinsharp:random"
+}

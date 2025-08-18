@@ -1,0 +1,38 @@
+{
+  "type": "lookinsharp:forging",
+  "input": {
+    "item": "minecraft:stone_sword"
+  },
+  "results": [
+    {
+      "id": "lookinsharp:stone_sword"
+    },
+    {
+      "id": "lookinsharp:stone_broadsword"
+    },
+    {
+      "id": "lookinsharp:stone_cutlass"
+    },
+    {
+      "id": "lookinsharp:stone_shortsword"
+    },
+    {
+      "id": "lookinsharp:stone_gladius"
+    },
+    {
+      "id": "lookinsharp:stone_cleaver"
+    },
+    {
+      "id": "lookinsharp:stone_honed_sword"
+    },
+    {
+      "id": "lookinsharp:stone_greatsword"
+    },
+    {
+      "id": "lookinsharp:stone_scythe"
+    },
+    {
+      "id": "lookinsharp:stone_spear"
+    }
+  ]
+}

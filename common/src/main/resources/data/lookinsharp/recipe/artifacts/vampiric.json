@@ -1,0 +1,10 @@
+{
+  "type": "lookinsharp:artifact_attachment",
+  "artifact": {
+    "item": "lookinsharp:vampiric_artifact"
+  },
+  "addon": {
+    "item": "minecraft:ghast_tear"
+  },
+  "result": "lookinsharp:life_steal"
+}

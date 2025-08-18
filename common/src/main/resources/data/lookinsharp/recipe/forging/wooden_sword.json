@@ -1,0 +1,38 @@
+{
+  "type": "lookinsharp:forging",
+  "input": {
+    "item": "minecraft:wooden_sword"
+  },
+  "results": [
+    {
+      "id": "lookinsharp:wooden_sword"
+    },
+    {
+      "id": "lookinsharp:wooden_broadsword"
+    },
+    {
+      "id": "lookinsharp:wooden_cutlass"
+    },
+    {
+      "id": "lookinsharp:wooden_shortsword"
+    },
+    {
+      "id": "lookinsharp:wooden_gladius"
+    },
+    {
+      "id": "lookinsharp:wooden_cleaver"
+    },
+    {
+      "id": "lookinsharp:wooden_honed_sword"
+    },
+    {
+      "id": "lookinsharp:wooden_greatsword"
+    },
+    {
+      "id": "lookinsharp:wooden_scythe"
+    },
+    {
+      "id": "lookinsharp:wooden_spear"
+    }
+  ]
+}

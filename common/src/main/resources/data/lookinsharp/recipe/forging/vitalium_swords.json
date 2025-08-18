@@ -1,0 +1,35 @@
+{
+  "type": "lookinsharp:forging",
+  "input": {
+    "item": "lookinsharp:vitalium_sword"
+  },
+  "results": [
+    {
+      "id": "lookinsharp:vitalium_broadsword"
+    },
+    {
+      "id": "lookinsharp:vitalium_cutlass"
+    },
+    {
+      "id": "lookinsharp:vitalium_shortsword"
+    },
+    {
+      "id": "lookinsharp:vitalium_gladius"
+    },
+    {
+      "id": "lookinsharp:vitalium_cleaver"
+    },
+    {
+      "id": "lookinsharp:vitalium_honed_sword"
+    },
+    {
+      "id": "lookinsharp:vitalium_greatsword"
+    },
+    {
+      "id": "lookinsharp:vitalium_scythe"
+    },
+    {
+      "id": "lookinsharp:vitalium_spear"
+    }
+  ]
+}

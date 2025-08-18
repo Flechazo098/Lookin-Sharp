@@ -1,0 +1,10 @@
+{
+  "type": "lookinsharp:artifact_attachment",
+  "artifact": {
+    "item": "lookinsharp:glacial_artifact"
+  },
+  "addon": {
+    "item": "minecraft:blue_ice"
+  },
+  "result": "lookinsharp:freeze"
+}

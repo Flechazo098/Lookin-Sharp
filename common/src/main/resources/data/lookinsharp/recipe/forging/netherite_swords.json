@@ -1,0 +1,38 @@
+{
+  "type": "lookinsharp:forging",
+  "input": {
+    "item": "minecraft:netherite_sword"
+  },
+  "results": [
+    {
+      "id": "lookinsharp:netherite_sword"
+    },
+    {
+      "id": "lookinsharp:netherite_broadsword"
+    },
+    {
+      "id": "lookinsharp:netherite_cutlass"
+    },
+    {
+      "id": "lookinsharp:netherite_shortsword"
+    },
+    {
+      "id": "lookinsharp:netherite_gladius"
+    },
+    {
+      "id": "lookinsharp:netherite_cleaver"
+    },
+    {
+      "id": "lookinsharp:netherite_honed_sword"
+    },
+    {
+      "id": "lookinsharp:netherite_greatsword"
+    },
+    {
+      "id": "lookinsharp:netherite_scythe"
+    },
+    {
+      "id": "lookinsharp:netherite_spear"
+    }
+  ]
+}

@@ -10,7 +10,6 @@ import earth.terrarium.lookinsharp.common.registry.ModMenus;
 import earth.terrarium.lookinsharp.util.Utils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -36,8 +35,6 @@ public class LookinSharpNeoForge {
 
         LOOT_MODIFIERS.register(modBus);
 
-        modBus.addListener(this::commonSetup);
-
         if (FMLEnvironment.dist.isClient()) {
             modBus.addListener(this::clientSetup);
         }
@@ -47,10 +44,6 @@ public class LookinSharpNeoForge {
                 event.getSource(),
                 event.getOriginalDamage()
         ));
-    }
-
-    private void commonSetup(FMLCommonSetupEvent event) {
-        LookinSharp.postInit();
     }
 
     private void clientSetup(RegisterMenuScreensEvent event) {

@@ -1,0 +1,9 @@
+// 1.21.1	2025-08-19T11:58:43.219931	Lookin' Sharp!/minecraft:entity Loot Table
+d8ea6b2b06e0853392b057c1c996801390e67355 data\lookinsharp\loot_table\entities\husk.json
+55e9ea139278af028bb7dd3211a1e35dab3f7050 data\lookinsharp\loot_table\entities\wither_skeleton.json
+9fb18ae3086bdc02511e9b2210375d43d3f4e936 data\lookinsharp\loot_table\entities\slime.json
+92c18a12f77473f73c676ae3db0283953f9ff211 data\lookinsharp\loot_table\entities\cave_spider.json
+75ed69091705dba8c3ab6e43b3dfcaf2e390e3e8 data\lookinsharp\loot_table\entities\snow_golem.json
+5bccab77af973fe5dd6bbb795692504ab8c56750 data\lookinsharp\loot_table\entities\iron_golem.json
+2b5aa5c90b39c3212e4f8dafd2cb3ae76f8e76ab data\lookinsharp\loot_table\entities\witch.json
+6e3afaef806e2ae7fa803201563df41b010d06c2 data\lookinsharp\loot_table\entities\ghast.json

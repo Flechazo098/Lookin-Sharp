@@ -1,0 +1,16 @@
+{
+  "type": "lookinsharp:artifact_drop",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:entities/ghast"
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 0.25
+    }
+  ],
+  "result": {
+    "id": "lookinsharp:vampiric_artifact"
+  }
+}

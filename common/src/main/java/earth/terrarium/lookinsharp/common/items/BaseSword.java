@@ -125,9 +125,8 @@ public class BaseSword extends SwordItem {
         ToolRarity rarity = ToolRarityApi.fromItem(stack);
 
         if (trait != null && rarity != null) {
-            trait.modifyAttributes(stack, EquipmentSlot.MAINHAND, (attribute, modifier) -> {
-                builder.add(attribute, modifier, EquipmentSlotGroup.MAINHAND);
-            }, rarity);
+            trait.modifyAttributes(stack, EquipmentSlot.MAINHAND, (attribute, modifier) ->
+                    builder.add(attribute, modifier, EquipmentSlotGroup.MAINHAND), rarity);
         }
 
         stack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build());

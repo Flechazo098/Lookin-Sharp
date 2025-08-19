@@ -1,0 +1,15 @@
+{
+  "weight": 1,
+  "attributeModifiers": {
+    "mainhand": [
+      {
+        "attribute": "minecraft:generic.armor",
+        "modifier": {
+          "id": "lookinsharp:trait_armor",
+          "amount": 1.0,
+          "operation": "add_value"
+        }
+      }
+    ]
+  }
+}

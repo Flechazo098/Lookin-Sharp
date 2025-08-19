@@ -24,6 +24,9 @@
     "client": [
       "earth.terrarium.lookinsharp.fabric.client.LookinSharpFabricClient"
     ],
+    "fabric-datagen": [
+      "earth.terrarium.lookinsharp.fabric.datagen.DataGenerator"
+    ],
     "jei_mod_plugin": [
       "earth.terrarium.lookinsharp.compat.jei.JEIPlugin"
     ],

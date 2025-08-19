@@ -6,6 +6,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 @DataDriven(
     modid = "lookinsharp",
     folder = "tool_rarities",
@@ -24,8 +26,8 @@ public record ToolRarityData(
             Codec.DOUBLE.fieldOf("multiplier").forGetter(ToolRarityData::multiplier),
             Codec.INT.fieldOf("color").forGetter(ToolRarityData::color),
             Codec.STRING.optionalFieldOf("vanillaRarity").forGetter(data -> 
-                data.vanillaRarity != null ? java.util.Optional.of(data.vanillaRarity) : java.util.Optional.empty())
-        ).apply(instance, (weight, multiplier, color, vanillaRarity) -> 
+                data.vanillaRarity != null ? Optional.of(data.vanillaRarity) : Optional.empty())
+        ).apply(instance, (weight, multiplier, color, vanillaRarity) ->
             new ToolRarityData(weight, multiplier, color, vanillaRarity.orElse(null)))
     );
 

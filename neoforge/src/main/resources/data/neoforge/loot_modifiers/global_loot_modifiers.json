@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "entries": [
+    "lookinsharp:battering_artifact",
+    "lookinsharp:deadly_artifact",
+    "lookinsharp:glacial_artifact",
+    "lookinsharp:sticky_artifact",
+    "lookinsharp:tonic_artifact",
+    "lookinsharp:weakening_artifact",
+    "lookinsharp:withering_artifact",
+    "lookinsharp:vampiric_artifact"
+  ]
+}

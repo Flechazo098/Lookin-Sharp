@@ -1,0 +1,15 @@
+{
+  "weight": 1,
+  "attributeModifiers": {
+    "mainhand": [
+      {
+        "attribute": "minecraft:generic.attack_speed",
+        "modifier": {
+          "id": "lookinsharp:trait_attack_speed",
+          "amount": 0.2,
+          "operation": "add_value"
+        }
+      }
+    ]
+  }
+}

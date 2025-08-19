@@ -1,0 +1,15 @@
+{
+  "weight": 1,
+  "attributeModifiers": {
+    "mainhand": [
+      {
+        "attribute": "minecraft:generic.max_health",
+        "modifier": {
+          "id": "lookinsharp:trait_max_health",
+          "amount": 1.0,
+          "operation": "add_value"
+        }
+      }
+    ]
+  }
+}

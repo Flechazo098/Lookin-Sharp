@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public class ArtifactLootModifier extends LootModifier {
-    // 修改为MapCodec
     public static final Supplier<MapCodec<ArtifactLootModifier>> CODEC = Suppliers.memoize(() ->
             RecordCodecBuilder.mapCodec(inst -> inst.group(
                     LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter((lm) -> lm.conditions),

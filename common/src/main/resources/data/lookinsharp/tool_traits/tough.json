@@ -1,0 +1,15 @@
+{
+  "weight": 1,
+  "attributeModifiers": {
+    "mainhand": [
+      {
+        "attribute": "minecraft:generic.armor_toughness",
+        "modifier": {
+          "id": "lookinsharp:trait_armor_toughness",
+          "amount": 0.5,
+          "operation": "add_value"
+        }
+      }
+    ]
+  }
+}

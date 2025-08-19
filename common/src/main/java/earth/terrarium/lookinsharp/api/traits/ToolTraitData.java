@@ -55,9 +55,6 @@ public record ToolTraitData(
                         entry.modifier().operation()
                     );
                     function.modifyAttribute(attribute, scaledModifier);
-                    System.out.println("[LookinSharp] Trait " + this + " modifying slot=" + slotName
-                            + " keys=" + attributeModifiers.keySet());
-
                 }
             }
         }

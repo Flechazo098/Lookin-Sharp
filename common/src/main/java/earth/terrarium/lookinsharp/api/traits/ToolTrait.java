@@ -6,5 +6,6 @@ import net.minecraft.world.item.ItemStack;
 
 public interface ToolTrait {
     int getWeight();
+
     void modifyAttributes(ItemStack stack, EquipmentSlot slot, AttributeModificationFunction function, ToolRarity rarity);
 }

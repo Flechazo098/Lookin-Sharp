@@ -14,8 +14,8 @@ public class ToolAbilityManager {
     public static Codec<ToolAbility> CODEC = Codec.STRING.xmap(ToolAbilityManager::getAbility, ToolAbilityManager::getName);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ToolAbility> STREAM_CODEC = StreamCodec.of(
-            ToolAbilityManager::toNetwork,
-            ToolAbilityManager::fromNetwork
+            ToolAbilityManager::encode,
+            ToolAbilityManager::decode
     );
 
     private static final Map<String, ToolAbility> ABILITY_MAP = new HashMap<>();
@@ -41,11 +41,11 @@ public class ToolAbilityManager {
         throw new NotImplementedException("Ability " + ability + " is not registered!");
     }
 
-    public static void toNetwork(RegistryFriendlyByteBuf buffer, ToolAbility ability) {
+    public static void encode(RegistryFriendlyByteBuf buffer, ToolAbility ability) {
         buffer.writeUtf(getName(ability));
     }
 
-    public static ToolAbility fromNetwork(RegistryFriendlyByteBuf buffer) {
+    public static ToolAbility decode(RegistryFriendlyByteBuf buffer) {
         String name = buffer.readUtf();
         return getAbility(name);
     }

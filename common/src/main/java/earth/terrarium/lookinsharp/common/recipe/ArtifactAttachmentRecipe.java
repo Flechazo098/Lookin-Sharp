@@ -110,8 +110,8 @@ public class ArtifactAttachmentRecipe implements SmithingRecipe {
         ).apply(instance, ArtifactAttachmentRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactAttachmentRecipe> STREAM_CODEC = StreamCodec.of(
-                Serializer::toNetwork,
-                Serializer::fromNetwork
+                Serializer::encode,
+                Serializer::decode
         );
 
         @Override
@@ -124,14 +124,14 @@ public class ArtifactAttachmentRecipe implements SmithingRecipe {
             return STREAM_CODEC;
         }
 
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, ArtifactAttachmentRecipe recipe) {
+        private static void encode(RegistryFriendlyByteBuf buffer, ArtifactAttachmentRecipe recipe) {
             buffer.writeResourceLocation(recipe.type);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.artifactIngredient);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.addonIngredient);
             ToolAbilityManager.STREAM_CODEC.encode(buffer, recipe.result);
         }
 
-        private static ArtifactAttachmentRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+        private static ArtifactAttachmentRecipe decode(RegistryFriendlyByteBuf buffer) {
             ResourceLocation id = buffer.readResourceLocation();
             Ingredient artifactIngredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             Ingredient addonIngredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);

@@ -2,6 +2,7 @@ package earth.terrarium.lookinsharp.platform;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.resources.ResourceLocation;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,15 +13,13 @@ public class PlatformHelper {
         throw new UnsupportedOperationException("Must be implemented by platform");
     }
 
-
     @ExpectPlatform
-    public static  <T> T getData(Class<T> dataClass, ResourceLocation location) {
+    public static <T> T getData(Class<T> dataClass, ResourceLocation location) {
         throw new UnsupportedOperationException("Must be implemented by platform");
     }
 
     @ExpectPlatform
-    public static <T> List<T> getDataList(Class<T> dataClass) {
+    public static <T> List<? extends T> getDataList(Class<T> dataClass) {
         throw new UnsupportedOperationException("Must be implemented by platform");
     }
-
 }

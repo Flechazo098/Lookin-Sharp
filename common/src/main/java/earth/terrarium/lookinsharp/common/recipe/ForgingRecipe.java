@@ -77,8 +77,8 @@ public class ForgingRecipe implements Recipe<RecipeInput> {
         ).apply(instance, ForgingRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ForgingRecipe> STREAM_CODEC = StreamCodec.of(
-                Serializer::toNetwork,
-                Serializer::fromNetwork
+                Serializer::encode,
+                Serializer::decode
         );
 
         @Override
@@ -91,7 +91,7 @@ public class ForgingRecipe implements Recipe<RecipeInput> {
             return STREAM_CODEC;
         }
 
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, ForgingRecipe recipe) {
+        private static void encode(RegistryFriendlyByteBuf buffer, ForgingRecipe recipe) {
             buffer.writeResourceLocation(recipe.type);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input);
             buffer.writeVarInt(recipe.results.size());
@@ -100,7 +100,7 @@ public class ForgingRecipe implements Recipe<RecipeInput> {
             }
         }
 
-        private static ForgingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+        private static ForgingRecipe decode(RegistryFriendlyByteBuf buffer) {
             ResourceLocation id = buffer.readResourceLocation();
             Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             int size = buffer.readVarInt();

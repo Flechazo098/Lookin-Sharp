@@ -9,6 +9,7 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 public class ToolRarityApi {
@@ -31,6 +32,10 @@ public class ToolRarityApi {
 
     public static ToolRarity getRarity(ResourceLocation id) {
         return PlatformHelper.getData(ToolRarityData.class, id);
+    }
+
+    public static List<? extends ToolRarity> getRarities() {
+        return PlatformHelper.getDataList(ToolRarityData.class);
     }
 
     public static ToolRarity rollRarity() {

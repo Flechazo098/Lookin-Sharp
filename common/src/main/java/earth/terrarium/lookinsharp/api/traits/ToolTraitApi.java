@@ -8,6 +8,7 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 public class ToolTraitApi {
@@ -30,6 +31,10 @@ public class ToolTraitApi {
 
     public static ToolTrait getTrait(ResourceLocation id) {
         return PlatformHelper.getData(ToolTraitData.class, id);
+    }
+
+    public static List<? extends ToolTrait> getTraits() {
+        return PlatformHelper.getDataList(ToolTraitData.class);
     }
 
     public static ToolTrait rollTrait() {

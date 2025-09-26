@@ -18,7 +18,7 @@ public class PlatformHelperImpl {
         return manager != null ? manager.getData(location) : null;
     }
 
-    public static <T> List<T> getDataList(Class<T> dataClass) {
+    public static <T> List<? extends T> getDataList(Class<T> dataClass) {
         DataManager<T> manager = DataManager.get(dataClass);
         return manager != null ? manager.getDataList() : List.of();
     }

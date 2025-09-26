@@ -2,7 +2,6 @@ package earth.terrarium.lookinsharp;
 
 import com.mojang.logging.LogUtils;
 import earth.terrarium.lookinsharp.common.registry.*;
-import earth.terrarium.lookinsharp.compat.botarium.BotariumCompat;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -28,6 +27,6 @@ public class LookinSharp {
         ModMenus.MENU_TYPES.register();
         ModAbilities.init();
 
-        BotariumCompat.init();
+//        BotariumCompat.init();
     }
 }

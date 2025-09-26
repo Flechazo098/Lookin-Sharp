@@ -9,26 +9,26 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 @DataDriven(
-    modid = "lookinsharp",
-    folder = "tool_rarities",
-    syncToClient = true
+        modid = "lookinsharp",
+        folder = "tool_rarities",
+        syncToClient = true
 )
 public record ToolRarityData(
-    int weight,
-    double multiplier,
-    int color,
-    @Nullable String vanillaRarity
+        int weight,
+        double multiplier,
+        int color,
+        @Nullable String vanillaRarity
 ) implements ToolRarity {
-    
+
     public static final Codec<ToolRarityData> CODEC = RecordCodecBuilder.create(instance ->
-        instance.group(
-            Codec.INT.fieldOf("weight").forGetter(ToolRarityData::weight),
-            Codec.DOUBLE.fieldOf("multiplier").forGetter(ToolRarityData::multiplier),
-            Codec.INT.fieldOf("color").forGetter(ToolRarityData::color),
-            Codec.STRING.optionalFieldOf("vanillaRarity").forGetter(data -> 
-                data.vanillaRarity != null ? Optional.of(data.vanillaRarity) : Optional.empty())
-        ).apply(instance, (weight, multiplier, color, vanillaRarity) ->
-            new ToolRarityData(weight, multiplier, color, vanillaRarity.orElse(null)))
+            instance.group(
+                    Codec.INT.fieldOf("weight").forGetter(ToolRarityData::weight),
+                    Codec.DOUBLE.fieldOf("multiplier").forGetter(ToolRarityData::multiplier),
+                    Codec.INT.fieldOf("color").forGetter(ToolRarityData::color),
+                    Codec.STRING.optionalFieldOf("vanillaRarity").forGetter(data ->
+                            data.vanillaRarity != null ? Optional.of(data.vanillaRarity) : Optional.empty())
+            ).apply(instance, (weight, multiplier, color, vanillaRarity) ->
+                    new ToolRarityData(weight, multiplier, color, vanillaRarity.orElse(null)))
     );
 
     @Override

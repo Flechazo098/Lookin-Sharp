@@ -1,6 +1,6 @@
 package earth.terrarium.lookinsharp.api.traits;
 
-import com.mafuyu404.oelib.api.data.DataDriven;
+import cc.sighs.oelib.data.api.DataDriven;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import earth.terrarium.lookinsharp.api.rarities.ToolRarity;

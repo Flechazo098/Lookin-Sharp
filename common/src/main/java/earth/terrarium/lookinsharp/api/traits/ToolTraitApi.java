@@ -1,7 +1,7 @@
 package earth.terrarium.lookinsharp.api.traits;
 
+import cc.sighs.oelib.data.DataManager;
 import earth.terrarium.lookinsharp.common.registry.ModDataComponents;
-import earth.terrarium.lookinsharp.platform.PlatformHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -16,7 +16,7 @@ public class ToolTraitApi {
     private static boolean poolBuilt = false;
 
     public static void buildTraitPool() {
-        Map<ResourceLocation, ToolTraitData> traits = PlatformHelper.getAllData(ToolTraitData.class);
+        Map<ResourceLocation, ToolTraitData> traits = DataManager.getAllData(ToolTraitData.class);
         SimpleWeightedRandomList.Builder<Map.Entry<ResourceLocation, ToolTraitData>> builder = SimpleWeightedRandomList.builder();
 
         for (Map.Entry<ResourceLocation, ToolTraitData> entry : traits.entrySet()) {
@@ -30,11 +30,11 @@ public class ToolTraitApi {
     }
 
     public static ToolTrait getTrait(ResourceLocation id) {
-        return PlatformHelper.getData(ToolTraitData.class, id);
+        return DataManager.getData(ToolTraitData.class, id);
     }
 
     public static List<? extends ToolTrait> getTraits() {
-        return PlatformHelper.getDataList(ToolTraitData.class);
+        return DataManager.getDataList(ToolTraitData.class);
     }
 
     public static ToolTrait rollTrait() {
@@ -47,7 +47,7 @@ public class ToolTraitApi {
     }
 
     public static ResourceLocation getTraitId(ToolTrait trait) {
-        Map<ResourceLocation, ToolTraitData> traits = PlatformHelper.getAllData(ToolTraitData.class);
+        Map<ResourceLocation, ToolTraitData> traits = DataManager.getAllData(ToolTraitData.class);
         for (Map.Entry<ResourceLocation, ToolTraitData> entry : traits.entrySet()) {
             if (entry.getValue().equals(trait)) {
                 return entry.getKey();

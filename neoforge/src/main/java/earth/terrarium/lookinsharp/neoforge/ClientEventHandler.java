@@ -1,6 +1,6 @@
 package earth.terrarium.lookinsharp.neoforge;
 
-import com.mafuyu404.oelib.neoforge.event.DataReloadEvent;
+import cc.sighs.oelib.neoforge.event.DataReloadEvent;
 import earth.terrarium.lookinsharp.LookinSharp;
 import earth.terrarium.lookinsharp.api.rarities.ToolRarityApi;
 import earth.terrarium.lookinsharp.api.rarities.ToolRarityData;

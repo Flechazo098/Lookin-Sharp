@@ -1,6 +1,9 @@
 package earth.terrarium.lookinsharp;
 
+import cc.sighs.oelib.data.DataRegistry;
 import com.mojang.logging.LogUtils;
+import earth.terrarium.lookinsharp.api.rarities.ToolRarityData;
+import earth.terrarium.lookinsharp.api.traits.ToolTraitData;
 import earth.terrarium.lookinsharp.common.registry.*;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -17,7 +20,8 @@ public class LookinSharp {
 
 
     public static void init() {
-
+        DataRegistry.register(ToolRarityData.class, ToolRarityData.CODEC);
+        DataRegistry.register(ToolTraitData.class, ToolTraitData.CODEC);
         ModDataComponents.DATA_COMPONENTS.register();
         ModBlocks.BLOCKS.register();
         ModItems.ITEMS.register();

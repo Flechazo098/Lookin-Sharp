@@ -1,7 +1,6 @@
 package earth.terrarium.lookinsharp.fabric.client;
 
-import com.mafuyu404.oelib.fabric.event.DataReloadEvent;
-import com.mafuyu404.oelib.fabric.event.impl.Events;
+import cc.sighs.oelib.fabric.event.DataReloadEvent;
 import earth.terrarium.lookinsharp.LookinSharp;
 import earth.terrarium.lookinsharp.api.rarities.ToolRarityApi;
 import earth.terrarium.lookinsharp.api.rarities.ToolRarityData;
@@ -14,9 +13,7 @@ public final class LookinSharpFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         LookinSharpClient.init();
-        Events.on(DataReloadEvent.EVENT)
-                .normal()
-                .register(this::onDataReload);
+        DataReloadEvent.EVENT.register(this::onDataReload);
     }
 
 

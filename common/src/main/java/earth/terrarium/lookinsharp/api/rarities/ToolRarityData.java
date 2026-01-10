@@ -1,6 +1,6 @@
 package earth.terrarium.lookinsharp.api.rarities;
 
-import com.mafuyu404.oelib.api.data.DataDriven;
+import cc.sighs.oelib.data.api.DataDriven;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.item.Rarity;

@@ -13,7 +13,5 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rootProject.rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin:$rootProject.rei_version"
 
-    modImplementation "curse.maven:oelib-1319210:6882793"
-
-    modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+    modImplementation 'cc.sighs.oelib:OELib-common-api-1.21.1:0.0.7'
 }

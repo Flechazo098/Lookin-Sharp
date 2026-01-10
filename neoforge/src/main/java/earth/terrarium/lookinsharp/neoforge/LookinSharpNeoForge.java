@@ -1,10 +1,7 @@
 package earth.terrarium.lookinsharp.neoforge;
 
-import com.mafuyu404.oelib.neoforge.data.DataRegistry;
 import com.mojang.serialization.MapCodec;
 import earth.terrarium.lookinsharp.LookinSharp;
-import earth.terrarium.lookinsharp.api.rarities.ToolRarityData;
-import earth.terrarium.lookinsharp.api.traits.ToolTraitData;
 import earth.terrarium.lookinsharp.client.screen.ForgingAnvilScreen;
 import earth.terrarium.lookinsharp.common.registry.ModMenus;
 import earth.terrarium.lookinsharp.util.Utils;
@@ -28,8 +25,6 @@ public class LookinSharpNeoForge {
             LOOT_MODIFIERS.register("artifact_drop", ArtifactLootModifier.CODEC);
 
     public LookinSharpNeoForge(IEventBus modBus) {
-        DataRegistry.register(ToolRarityData.class);
-        DataRegistry.register(ToolTraitData.class);
 
         LookinSharp.init();
 

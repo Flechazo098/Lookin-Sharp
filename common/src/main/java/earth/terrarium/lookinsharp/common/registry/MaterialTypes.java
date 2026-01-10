@@ -1,6 +1,6 @@
 package earth.terrarium.lookinsharp.common.registry;
 
-import dev.architectury.registry.registries.RegistrySupplier;
+import cc.sighs.oelib.registry.RegisterSupplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
@@ -18,7 +18,7 @@ public enum MaterialTypes {
 
     public static final MaterialTypes[] VALUES = values();
 
-    public final List<RegistrySupplier<Item>> items;
+    public final List<RegisterSupplier<Item>> items;
     public final Tier tier;
 
     MaterialTypes(Tier tier) {

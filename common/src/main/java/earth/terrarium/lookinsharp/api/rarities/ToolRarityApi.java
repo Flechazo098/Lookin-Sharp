@@ -1,7 +1,7 @@
 package earth.terrarium.lookinsharp.api.rarities;
 
+import cc.sighs.oelib.data.DataManager;
 import earth.terrarium.lookinsharp.common.registry.ModDataComponents;
-import earth.terrarium.lookinsharp.platform.PlatformHelper;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -17,7 +17,7 @@ public class ToolRarityApi {
     private static boolean poolBuilt = false;
 
     public static void buildRarityPool() {
-        Map<ResourceLocation, ToolRarityData> rarities = PlatformHelper.getAllData(ToolRarityData.class);
+        Map<ResourceLocation, ToolRarityData> rarities = DataManager.getAllData(ToolRarityData.class);
         SimpleWeightedRandomList.Builder<Map.Entry<ResourceLocation, ToolRarityData>> builder = SimpleWeightedRandomList.builder();
 
         for (Map.Entry<ResourceLocation, ToolRarityData> entry : rarities.entrySet()) {
@@ -31,11 +31,11 @@ public class ToolRarityApi {
     }
 
     public static ToolRarity getRarity(ResourceLocation id) {
-        return PlatformHelper.getData(ToolRarityData.class, id);
+        return DataManager.getData(ToolRarityData.class, id);
     }
 
     public static List<? extends ToolRarity> getRarities() {
-        return PlatformHelper.getDataList(ToolRarityData.class);
+        return DataManager.getDataList(ToolRarityData.class);
     }
 
     public static ToolRarity rollRarity() {
@@ -48,7 +48,7 @@ public class ToolRarityApi {
     }
 
     public static ResourceLocation getRarityId(ToolRarity rarity) {
-        Map<ResourceLocation, ToolRarityData> rarities = PlatformHelper.getAllData(ToolRarityData.class);
+        Map<ResourceLocation, ToolRarityData> rarities = DataManager.getAllData(ToolRarityData.class);
         for (Map.Entry<ResourceLocation, ToolRarityData> entry : rarities.entrySet()) {
             if (entry.getValue().equals(rarity)) {
                 return entry.getKey();

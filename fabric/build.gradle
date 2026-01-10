@@ -35,15 +35,13 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
 
-    modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
-
     modApi "com.terraformersmc:modmenu:$rootProject.modmenu_version"
 
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rootProject.rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:$rootProject.rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:$rootProject.rei_version"
 
-    modImplementation "curse.maven:oelib-1319210:6882793"
+    modApi 'cc.sighs.oelib:OELib-fabric-1.21.1:0.0.7'
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')

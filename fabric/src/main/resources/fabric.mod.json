@@ -41,8 +41,7 @@
     "fabricloader": "*",
     "minecraft": "~1.21.1",
     "java": "*",
-    "oelib": ">=0.0.4-beta",
-    "architectury": "*",
+    "oelib": ">=0.0.7",
     "fabric-api": "*"
   },
   "suggests": {

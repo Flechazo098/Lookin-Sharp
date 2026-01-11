@@ -13,5 +13,5 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rootProject.rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin:$rootProject.rei_version"
 
-    modImplementation 'cc.sighs.oelib:OELib-common-api-1.21.1:0.0.7'
+    modImplementation 'cc.sighs.oelib:OELib-common-api-1.21.1:0.0.8'
 }

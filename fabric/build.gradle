@@ -41,7 +41,7 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:$rootProject.rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:$rootProject.rei_version"
 
-    modApi 'cc.sighs.oelib:OELib-fabric-1.21.1:0.0.7'
+    modApi 'cc.sighs.oelib:OELib-fabric-1.21.1:0.0.8'
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')

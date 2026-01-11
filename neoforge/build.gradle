@@ -38,7 +38,7 @@ dependencies {
     modCompileOnly "mezz.jei:jei-$rootProject.minecraft_version-neoforge-api:$rootProject.jei_version"
     modLocalRuntime("mezz.jei:jei-$rootProject.minecraft_version-neoforge:$rootProject.jei_version") { transitive = false }
 
-    modImplementation 'cc.sighs.oelib:OELib-neoforge-1.21.1:0.0.7'
+    modImplementation 'cc.sighs.oelib:OELib-neoforge-1.21.1:0.0.8'
     forgeRuntimeLibrary("cn.6tail:lunar:1.7.3")
     forgeRuntimeLibrary("de.marhali:json5-java:3.0.0")
 

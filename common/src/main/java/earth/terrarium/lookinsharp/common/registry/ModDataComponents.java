@@ -7,7 +7,7 @@ import earth.terrarium.lookinsharp.api.abilities.ToolAbility;
 import earth.terrarium.lookinsharp.api.abilities.ToolAbilityManager;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ModDataComponents {
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, LookinSharp.MOD_ID);
@@ -18,15 +18,15 @@ public class ModDataComponents {
                     .networkSynchronized(ToolAbilityManager.STREAM_CODEC)
                     .build());
 
-    public static final RegisterSupplier<DataComponentType<ResourceLocation>> TOOL_TRAIT_ID = DATA_COMPONENTS.register("tool_trait",
-            () -> DataComponentType.<ResourceLocation>builder()
-                    .persistent(ResourceLocation.CODEC)
-                    .networkSynchronized(ResourceLocation.STREAM_CODEC)
+    public static final RegisterSupplier<DataComponentType<Identifier>> TOOL_TRAIT_ID = DATA_COMPONENTS.register("tool_trait",
+            () -> DataComponentType.<Identifier>builder()
+                    .persistent(Identifier.CODEC)
+                    .networkSynchronized(Identifier.STREAM_CODEC)
                     .build());
 
-    public static final RegisterSupplier<DataComponentType<ResourceLocation>> TOOL_RARITY_ID = DATA_COMPONENTS.register("tool_rarity",
-            () -> DataComponentType.<ResourceLocation>builder()
-                    .persistent(ResourceLocation.CODEC)
-                    .networkSynchronized(ResourceLocation.STREAM_CODEC)
+    public static final RegisterSupplier<DataComponentType<Identifier>> TOOL_RARITY_ID = DATA_COMPONENTS.register("tool_rarity",
+            () -> DataComponentType.<Identifier>builder()
+                    .persistent(Identifier.CODEC)
+                    .networkSynchronized(Identifier.STREAM_CODEC)
                     .build());
 }

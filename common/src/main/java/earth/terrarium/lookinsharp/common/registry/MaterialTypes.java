@@ -2,26 +2,25 @@ package earth.terrarium.lookinsharp.common.registry;
 
 import cc.sighs.oelib.registry.RegisterSupplier;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.ToolMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public enum MaterialTypes {
-    WOODEN(Tiers.WOOD),
-    STONE(Tiers.STONE),
-    IRON(Tiers.IRON),
-    GOLDEN(Tiers.GOLD),
-    DIAMOND(Tiers.DIAMOND),
-    NETHERITE(Tiers.NETHERITE);
+    WOODEN(ToolMaterial.WOOD),
+    STONE(ToolMaterial.STONE),
+    IRON(ToolMaterial.IRON),
+    GOLDEN(ToolMaterial.GOLD),
+    DIAMOND(ToolMaterial.DIAMOND),
+    NETHERITE(ToolMaterial.NETHERITE);
 
     public static final MaterialTypes[] VALUES = values();
 
     public final List<RegisterSupplier<Item>> items;
-    public final Tier tier;
+    public final ToolMaterial tier;
 
-    MaterialTypes(Tier tier) {
+    MaterialTypes(ToolMaterial tier) {
         this.items = new ArrayList<>();
         this.tier = tier;
     }

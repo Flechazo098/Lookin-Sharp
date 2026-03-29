@@ -14,10 +14,17 @@ public class ModRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, LookinSharp.MOD_ID);
 
     public static final RegisterSupplier<RecipeType<ForgingRecipe>> FORGING =
-            RECIPE_TYPES.register("forging", () -> RecipeType.register("forging"));
+            RECIPE_TYPES.register("forging", () -> new RecipeType<>() {
+                @Override
+                public String toString() {
+                    return LookinSharp.MOD_ID + ":forging";
+                }
+            });
 
-    public static final RegisterSupplier<RecipeSerializer<ForgingRecipe>> FORGING_SERIALIZER = RECIPE_SERIALIZERS.register("forging", ForgingRecipe.Serializer::new);
+    public static final RegisterSupplier<RecipeSerializer<ForgingRecipe>> FORGING_SERIALIZER =
+            RECIPE_SERIALIZERS.register("forging", () -> new RecipeSerializer<>(ForgingRecipe.CODEC, ForgingRecipe.STREAM_CODEC));
 
-    public static final RegisterSupplier<RecipeSerializer<ArtifactAttachmentRecipe>> ARTIFACT_ATTACHMENT_SERIALIZER = RECIPE_SERIALIZERS.register("artifact_attachment", ArtifactAttachmentRecipe.Serializer::new);
+    public static final RegisterSupplier<RecipeSerializer<ArtifactAttachmentRecipe>> ARTIFACT_ATTACHMENT_SERIALIZER =
+            RECIPE_SERIALIZERS.register("artifact_attachment", () -> new RecipeSerializer<>(ArtifactAttachmentRecipe.CODEC, ArtifactAttachmentRecipe.STREAM_CODEC));
 
 }

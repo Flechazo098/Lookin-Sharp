@@ -1,10 +1,6 @@
-{
-  "type": "lookinsharp:artifact_attachment",
-  "artifact": {
-    "item": "lookinsharp:battering_artifact"
-  },
-  "addon": {
-    "item": "minecraft:iron_block"
-  },
-  "result": "lookinsharp:golem"
+﻿{
+    "type":  "lookinsharp:artifact_attachment",
+    "artifact":  "lookinsharp:battering_artifact",
+    "addon":  "minecraft:iron_block",
+    "result":  "lookinsharp:golem"
 }

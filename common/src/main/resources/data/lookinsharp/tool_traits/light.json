@@ -1,9 +1,10 @@
 {
   "weight": 1,
+  "color": 8177663,
   "attributeModifiers": {
     "mainhand": [
       {
-        "attribute": "minecraft:generic.movement_speed",
+        "attribute": "minecraft:movement_speed",
         "modifier": {
           "id": "lookinsharp:trait_movement_speed",
           "amount": 0.15,

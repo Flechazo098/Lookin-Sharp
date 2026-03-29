@@ -1,20 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "lookinsharp",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "Lookin' Sharp!",
-  "description": "",
+  "name": "${mod_name}",
+  "description": "${description}",
   "authors": [
-    "Joosh",
-    "Flechazo",
-    "CodexAdrian"
+    "${mod_author}"
   ],
   "contact": {
     "website": "https://www.curseforge.com/minecraft/mc-mods/lookin-sharp",
-    "repo": "https://github.com/terrarium-earth/lookin-sharp",
-    "issues": "https://github.com/terrarium-earth/lookin-sharp/issues"
+    "repo": "https://github.com/Flechazo098/Lookin-Sharp",
+    "issues": "https://github.com/Flechazo098/Lookin-Sharp/issues"
   },
-  "license": "Terrarium Licence",
+  "license": "${license}",
   "icon": "assets/lookinsharp/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -26,23 +24,18 @@
     ],
     "fabric-datagen": [
       "earth.terrarium.lookinsharp.fabric.datagen.DataGenerator"
-    ],
-    "jei_mod_plugin": [
-      "earth.terrarium.lookinsharp.compat.jei.JEIPlugin"
-    ],
-    "rei_client": [
-      "earth.terrarium.lookinsharp.compat.rei.REIPlugin"
     ]
   },
   "mixins": [
-    "lookinsharp.mixins.json"
+    "${mod_id}.mixins.json",
+    "${mod_id}.fabric.mixins.json"
   ],
   "depends": {
-    "fabricloader": "*",
-    "minecraft": "~1.21.1",
-    "java": "*",
-    "oelib": ">=0.0.7",
-    "fabric-api": "*"
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": "*",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=${java_version}",
+    "oelib": ">=0.2.2"
   },
   "suggests": {
     "another-mod": "*"

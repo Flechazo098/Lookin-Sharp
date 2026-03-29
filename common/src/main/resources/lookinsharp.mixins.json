@@ -1,11 +1,15 @@
 {
   "required": true,
   "package": "earth.terrarium.lookinsharp.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_18",
   "minVersion": "0.8",
   "client": [
+    "ClientRecipeContainerMixin"
   ],
   "mixins": [
+    "PlayerListMixin",
+    "RecipeAccessMixin",
+    "RecipeManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

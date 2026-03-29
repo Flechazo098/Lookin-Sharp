@@ -1,9 +1,10 @@
 {
   "weight": 1,
+  "color": 9202243,
   "attributeModifiers": {
     "mainhand": [
       {
-        "attribute": "minecraft:generic.armor",
+        "attribute": "minecraft:armor",
         "modifier": {
           "id": "lookinsharp:trait_armor",
           "amount": 1.0,

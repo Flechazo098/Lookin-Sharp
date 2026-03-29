@@ -2,10 +2,9 @@ package earth.terrarium.lookinsharp.api.rarities;
 
 import cc.sighs.oelib.data.DataManager;
 import earth.terrarium.lookinsharp.common.registry.ModDataComponents;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,14 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ToolRarityApi {
-    private static SimpleWeightedRandomList<Map.Entry<ResourceLocation, ToolRarityData>> rarityPool = SimpleWeightedRandomList.empty();
+    private static WeightedList<Map.Entry<Identifier, ToolRarityData>> rarityPool = WeightedList.of();
     private static boolean poolBuilt = false;
 
     public static void buildRarityPool() {
-        Map<ResourceLocation, ToolRarityData> rarities = DataManager.getAllData(ToolRarityData.class);
-        SimpleWeightedRandomList.Builder<Map.Entry<ResourceLocation, ToolRarityData>> builder = SimpleWeightedRandomList.builder();
+        Map<Identifier, ToolRarityData> rarities = DataManager.getAllData(ToolRarityData.class);
+        WeightedList.Builder<Map.Entry<Identifier, ToolRarityData>> builder = WeightedList.builder();
 
-        for (Map.Entry<ResourceLocation, ToolRarityData> entry : rarities.entrySet()) {
+        for (Map.Entry<Identifier, ToolRarityData> entry : rarities.entrySet()) {
             if (entry.getValue().getWeight() > 0) {
                 builder.add(entry, entry.getValue().getWeight());
             }
@@ -30,7 +29,7 @@ public class ToolRarityApi {
         poolBuilt = true;
     }
 
-    public static ToolRarity getRarity(ResourceLocation id) {
+    public static ToolRarity getRarity(Identifier id) {
         return DataManager.getData(ToolRarityData.class, id);
     }
 
@@ -42,14 +41,14 @@ public class ToolRarityApi {
         if (!poolBuilt) {
             buildRarityPool();
         }
-        return rarityPool.getRandomValue(RandomSource.create())
+        return rarityPool.getRandom(RandomSource.create())
                 .map(Map.Entry::getValue)
                 .orElse(null);
     }
 
-    public static ResourceLocation getRarityId(ToolRarity rarity) {
-        Map<ResourceLocation, ToolRarityData> rarities = DataManager.getAllData(ToolRarityData.class);
-        for (Map.Entry<ResourceLocation, ToolRarityData> entry : rarities.entrySet()) {
+    public static Identifier getRarityId(ToolRarity rarity) {
+        Map<Identifier, ToolRarityData> rarities = DataManager.getAllData(ToolRarityData.class);
+        for (Map.Entry<Identifier, ToolRarityData> entry : rarities.entrySet()) {
             if (entry.getValue().equals(rarity)) {
                 return entry.getKey();
             }
@@ -59,17 +58,14 @@ public class ToolRarityApi {
 
     @Nullable
     public static ToolRarity fromItem(ItemStack stack) {
-        ResourceLocation id = stack.get(ModDataComponents.TOOL_RARITY_ID.get());
+        Identifier id = stack.get(ModDataComponents.TOOL_RARITY_ID.get());
         if (id == null) return null;
         return getRarity(id);
     }
 
     public static void setRarity(ItemStack stack, ToolRarity rarity) {
-        ResourceLocation id = getRarityId(rarity);
+        Identifier id = getRarityId(rarity);
         stack.set(ModDataComponents.TOOL_RARITY_ID.get(), id);
-        if (rarity.getVanillaRarity() != null) {
-            stack.set(DataComponents.RARITY, rarity.getVanillaRarity());
-        }
     }
 
     public static void onDataReload() {

@@ -1,38 +1,36 @@
-{
-  "type": "lookinsharp:forging",
-  "input": {
-    "item": "minecraft:iron_sword"
-  },
-  "results": [
-    {
-      "id": "lookinsharp:iron_sword"
-    },
-    {
-      "id": "lookinsharp:iron_broadsword"
-    },
-    {
-      "id": "lookinsharp:iron_cutlass"
-    },
-    {
-      "id": "lookinsharp:iron_shortsword"
-    },
-    {
-      "id": "lookinsharp:iron_gladius"
-    },
-    {
-      "id": "lookinsharp:iron_cleaver"
-    },
-    {
-      "id": "lookinsharp:iron_honed_sword"
-    },
-    {
-      "id": "lookinsharp:iron_greatsword"
-    },
-    {
-      "id": "lookinsharp:iron_scythe"
-    },
-    {
-      "id": "lookinsharp:iron_spear"
-    }
-  ]
+﻿{
+    "type":  "lookinsharp:forging",
+    "input":  "minecraft:iron_sword",
+    "results":  [
+                    {
+                        "id":  "lookinsharp:iron_sword"
+                    },
+                    {
+                        "id":  "lookinsharp:iron_broadsword"
+                    },
+                    {
+                        "id":  "lookinsharp:iron_cutlass"
+                    },
+                    {
+                        "id":  "lookinsharp:iron_shortsword"
+                    },
+                    {
+                        "id":  "lookinsharp:iron_gladius"
+                    },
+                    {
+                        "id":  "lookinsharp:iron_cleaver"
+                    },
+                    {
+                        "id":  "lookinsharp:iron_honed_sword"
+                    },
+                    {
+                        "id":  "lookinsharp:iron_greatsword"
+                    },
+                    {
+                        "id":  "lookinsharp:iron_scythe"
+                    },
+                    {
+                        "id":  "lookinsharp:iron_spear"
+                    }
+                ]
 }

@@ -3,112 +3,125 @@ package earth.terrarium.lookinsharp.common.recipe;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import earth.terrarium.lookinsharp.common.registry.ModRecipes;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
 public class ForgingRecipe implements Recipe<RecipeInput> {
-    private final ResourceLocation type;
-    private final Ingredient input;
-    private final List<ItemStack> results;
+    public static final MapCodec<ForgingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Recipe.CommonInfo.MAP_CODEC.forGetter(recipe -> recipe.commonInfo),
+            Identifier.CODEC.fieldOf("type").forGetter(recipe -> recipe.type),
+            Ingredient.CODEC.fieldOf("input").forGetter(ForgingRecipe::getInput),
+            ItemStackTemplate.CODEC.listOf().fieldOf("results").forGetter(ForgingRecipe::getResultTemplates)
+    ).apply(instance, ForgingRecipe::new));
 
-    public ForgingRecipe(ResourceLocation type, Ingredient input, List<ItemStack> results) {
+    public static final StreamCodec<RegistryFriendlyByteBuf, ForgingRecipe> STREAM_CODEC = StreamCodec.of(
+            ForgingRecipe::encode,
+            ForgingRecipe::decode
+    );
+
+    private final Recipe.CommonInfo commonInfo;
+    private final Identifier type;
+    private final Ingredient input;
+    private final List<ItemStackTemplate> results;
+    private @Nullable PlacementInfo placementInfo;
+
+    public ForgingRecipe(Recipe.CommonInfo commonInfo, Identifier type, Ingredient input, List<ItemStackTemplate> results) {
+        this.commonInfo = commonInfo;
         this.type = type;
         this.input = input;
-        this.results = results;
+        this.results = List.copyOf(results);
     }
 
     @Override
     public boolean matches(RecipeInput recipeInput, Level level) {
-        return input.test(recipeInput.getItem(0));
+        return this.input.test(recipeInput.getItem(0));
     }
 
     @Override
-    public ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
-        return results.isEmpty() ? ItemStack.EMPTY : results.getFirst().copy();
+    public ItemStack assemble(RecipeInput recipeInput) {
+        return this.results.isEmpty() ? ItemStack.EMPTY : this.results.getFirst().create();
     }
 
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return true;
+    public boolean showNotification() {
+        return this.commonInfo.showNotification();
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(@NotNull HolderLookup.Provider provider) {
-        return results.isEmpty() ? ItemStack.EMPTY : results.getFirst();
+    public String group() {
+        return "";
     }
 
     @Override
-    public String getGroup() {
-        return Recipe.super.getGroup();
-    }
-
-    @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<ForgingRecipe> getSerializer() {
         return ModRecipes.FORGING_SERIALIZER.get();
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public @NotNull RecipeType<ForgingRecipe> getType() {
         return ModRecipes.FORGING.get();
     }
 
+    @Override
+    public PlacementInfo placementInfo() {
+        if (this.placementInfo == null) {
+            this.placementInfo = PlacementInfo.create(this.input);
+        }
+        return this.placementInfo;
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return RecipeBookCategories.STONECUTTER;
+    }
+
     public Ingredient getInput() {
-        return input;
+        return this.input;
     }
 
     public List<ItemStack> getResults() {
-        return results;
+        return this.results.stream().map(ItemStackTemplate::create).toList();
     }
 
-    public static class Serializer implements RecipeSerializer<ForgingRecipe> {
-        public static final MapCodec<ForgingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ResourceLocation.CODEC.fieldOf("type").forGetter(recipe -> recipe.type),
-                Ingredient.CODEC.fieldOf("input").forGetter(ForgingRecipe::getInput),
-                ItemStack.CODEC.listOf().fieldOf("results").forGetter(ForgingRecipe::getResults)
-        ).apply(instance, ForgingRecipe::new));
+    public List<ItemStackTemplate> getResultTemplates() {
+        return this.results;
+    }
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, ForgingRecipe> STREAM_CODEC = StreamCodec.of(
-                Serializer::encode,
-                Serializer::decode
-        );
-
-        @Override
-        public @NotNull MapCodec<ForgingRecipe> codec() {
-            return CODEC;
+    private static void encode(RegistryFriendlyByteBuf buffer, ForgingRecipe recipe) {
+        Recipe.CommonInfo.STREAM_CODEC.encode(buffer, recipe.commonInfo);
+        buffer.writeIdentifier(recipe.type);
+        Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input);
+        buffer.writeVarInt(recipe.results.size());
+        for (ItemStackTemplate result : recipe.results) {
+            ItemStackTemplate.STREAM_CODEC.encode(buffer, result);
         }
+    }
 
-        @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, ForgingRecipe> streamCodec() {
-            return STREAM_CODEC;
+    private static ForgingRecipe decode(RegistryFriendlyByteBuf buffer) {
+        Recipe.CommonInfo commonInfo = Recipe.CommonInfo.STREAM_CODEC.decode(buffer);
+        Identifier id = buffer.readIdentifier();
+        Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+        int size = buffer.readVarInt();
+        List<ItemStackTemplate> results = new java.util.ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            results.add(ItemStackTemplate.STREAM_CODEC.decode(buffer));
         }
-
-        private static void encode(RegistryFriendlyByteBuf buffer, ForgingRecipe recipe) {
-            buffer.writeResourceLocation(recipe.type);
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input);
-            buffer.writeVarInt(recipe.results.size());
-            for (ItemStack result : recipe.results) {
-                ItemStack.STREAM_CODEC.encode(buffer, result);
-            }
-        }
-
-        private static ForgingRecipe decode(RegistryFriendlyByteBuf buffer) {
-            ResourceLocation id = buffer.readResourceLocation();
-            Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            int size = buffer.readVarInt();
-            List<ItemStack> results = NonNullList.withSize(size, ItemStack.EMPTY);
-            for (int i = 0; i < size; i++) {
-                results.set(i, ItemStack.STREAM_CODEC.decode(buffer));
-            }
-            return new ForgingRecipe(id, input, results);
-        }
+        return new ForgingRecipe(commonInfo, id, input, results);
     }
 }

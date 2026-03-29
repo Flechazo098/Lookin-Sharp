@@ -10,13 +10,12 @@ import earth.terrarium.lookinsharp.api.traits.ToolTraitApi;
 import earth.terrarium.lookinsharp.api.types.SwordType;
 import earth.terrarium.lookinsharp.common.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,41 +23,35 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.Tool;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.component.TooltipDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-public class BaseSword extends SwordItem {
+public class BaseSword extends Item {
     public final SwordType type;
     private final int baseAttackDamage;
     private final float baseAttackSpeed;
-    private final Tier baseTier;
+    private final ToolMaterial baseTier;
 
-    public BaseSword(Tier tier, SwordType type, int attackDamage, float attackSpeed, Properties properties) {
-        super(tier, properties.component(DataComponents.TOOL, createToolProperties()).attributes(createAttributes(tier, type, attackDamage, attackSpeed)));
+    public BaseSword(ToolMaterial tier, SwordType type, int attackDamage, float attackSpeed, Properties properties) {
+        super(tier.applySwordProperties(properties, attackDamage, attackSpeed).attributes(createAttributes(tier, type, attackDamage, attackSpeed)));
         this.type = type;
         this.baseAttackDamage = attackDamage;
         this.baseAttackSpeed = attackSpeed;
         this.baseTier = tier;
     }
 
-    private static Tool createToolProperties() {
-        return new Tool(List.of(Tool.Rule.minesAndDrops(List.of(Blocks.COBWEB), 15.0F), Tool.Rule.overrideSpeed(BlockTags.SWORD_EFFICIENT, 1.5F)), 1.0F, 2);
-    }
-
-    public static ItemAttributeModifiers createAttributes(Tier tier, SwordType type, int attackDamage, float attackSpeed) {
+    public static ItemAttributeModifiers createAttributes(ToolMaterial tier, SwordType type, int attackDamage, float attackSpeed) {
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, (float) attackDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.attackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
 
         addSwordTypeModifiers(builder, type);
@@ -76,23 +69,14 @@ public class BaseSword extends SwordItem {
     }
 
     @Override
-    public boolean canAttackBlock(BlockState blockState, Level level, BlockPos blockPos, Player player) {
-        return !player.isCreative();
-    }
-
-    @Override
-    public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-        return true;
-    }
-
-    @Override
     public void postHurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
         itemStack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
     }
 
     @Override
-    public void onCraftedBy(ItemStack itemStack, Level level, Player player) {
-        super.onCraftedBy(itemStack, level, player);
+    public void onCraftedBy(ItemStack itemStack, Player player) {
+        super.onCraftedBy(itemStack, player);
+        var level = player.level();
         if (level.isClientSide()) {
             return;
         }
@@ -116,7 +100,7 @@ public class BaseSword extends SwordItem {
 
     private void recalcAttributeComponents(ItemStack stack) {
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, (float) baseAttackDamage + baseTier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, baseAttackDamage + baseTier.attackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, baseAttackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
 
         addSwordTypeModifiers(builder, this.type);
@@ -133,21 +117,21 @@ public class BaseSword extends SwordItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
-        super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> tooltip, TooltipFlag tooltipFlag) {
+        super.appendHoverText(itemStack, tooltipContext, tooltipDisplay, tooltip, tooltipFlag);
 
         ToolRarity rarity = ToolRarityApi.fromItem(itemStack);
         if (rarity != null) {
-            ResourceLocation rarityId = ToolRarityApi.getRarityId(rarity);
-            list.add(Component.translatable(rarityId.toLanguageKey("rarity")).withStyle(ChatFormatting.BOLD).withStyle(Style.EMPTY.withColor(rarity.getColor())));
+            Identifier rarityId = ToolRarityApi.getRarityId(rarity);
+            tooltip.accept(Component.translatable(rarityId.toLanguageKey("rarity")).withStyle(ChatFormatting.BOLD).withStyle(Style.EMPTY.withColor(rarity.getColor())));
         }
 
         ToolAbility ability = getAbility(itemStack);
         if (ability != null) {
-            ResourceLocation resourceLocation = ResourceLocation.tryParse(ToolAbilityManager.getName(ability));
-            if (resourceLocation == null) return;
-            list.add(Component.translatable(resourceLocation.toLanguageKey("ability")));
-            list.add(Component.translatable(resourceLocation.toLanguageKey("ability").concat(".desc")).withStyle(ChatFormatting.GRAY));
+            Identifier abilityId = Identifier.tryParse(ToolAbilityManager.getName(ability));
+            if (abilityId == null) return;
+            tooltip.accept(Component.translatable(abilityId.toLanguageKey("ability")));
+            tooltip.accept(Component.translatable(abilityId.toLanguageKey("ability").concat(".desc")).withStyle(ChatFormatting.GRAY));
         }
     }
 
@@ -155,8 +139,16 @@ public class BaseSword extends SwordItem {
     public @NotNull Component getName(ItemStack itemStack) {
         ToolTrait toolTrait = getTrait(itemStack);
         if (toolTrait != null) {
-            ResourceLocation traitId = ToolTraitApi.getTraitId(toolTrait);
-            return Component.translatable(traitId.toLanguageKey("trait")).append(Component.literal(" ")).append(super.getName(itemStack));
+            Identifier traitId = ToolTraitApi.getTraitId(toolTrait);
+            MutableComponent traitPrefix = Component.translatable(traitId.toLanguageKey("trait"));
+            Integer traitColor = toolTrait.getColor();
+            if (traitColor != null) {
+                traitPrefix = traitPrefix.withStyle(Style.EMPTY.withColor(traitColor));
+            }
+            return Component.empty()
+                    .append(traitPrefix)
+                    .append(Component.literal(" "))
+                    .append(super.getName(itemStack));
         }
         return super.getName(itemStack);
     }
@@ -176,12 +168,12 @@ public class BaseSword extends SwordItem {
 
     @Nullable
     public ToolTrait getTrait(ItemStack stack) {
-        ResourceLocation id = getTraitId(stack);
+        Identifier id = getTraitId(stack);
         return id != null ? ToolTraitApi.getTrait(id) : null;
     }
 
     @Nullable
-    public ResourceLocation getTraitId(ItemStack stack) {
+    public Identifier getTraitId(ItemStack stack) {
         return stack.get(ModDataComponents.TOOL_TRAIT_ID.get());
     }
 }

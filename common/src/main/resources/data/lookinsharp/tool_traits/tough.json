@@ -1,9 +1,10 @@
 {
   "weight": 1,
+  "color": 5205370,
   "attributeModifiers": {
     "mainhand": [
       {
-        "attribute": "minecraft:generic.armor_toughness",
+        "attribute": "minecraft:armor_toughness",
         "modifier": {
           "id": "lookinsharp:trait_armor_toughness",
           "amount": 0.5,

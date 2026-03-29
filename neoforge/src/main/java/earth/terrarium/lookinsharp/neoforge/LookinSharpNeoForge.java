@@ -1,5 +1,6 @@
 package earth.terrarium.lookinsharp.neoforge;
 
+import cc.sighs.oelib.network.api.NetworkAutoRegistration;
 import com.mojang.serialization.MapCodec;
 import earth.terrarium.lookinsharp.LookinSharp;
 import earth.terrarium.lookinsharp.client.screen.ForgingAnvilScreen;
@@ -25,12 +26,12 @@ public class LookinSharpNeoForge {
             LOOT_MODIFIERS.register("artifact_drop", ArtifactLootModifier.CODEC);
 
     public LookinSharpNeoForge(IEventBus modBus) {
-
+        NetworkAutoRegistration.registerBasePackage("earth.terrarium.lookinsharp.network");
         LookinSharp.init();
 
         LOOT_MODIFIERS.register(modBus);
 
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             modBus.addListener(this::clientSetup);
         }
 

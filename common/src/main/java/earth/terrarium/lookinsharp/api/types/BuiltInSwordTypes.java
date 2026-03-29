@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import earth.terrarium.lookinsharp.LookinSharp;
 import earth.terrarium.lookinsharp.util.Utils;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -76,7 +76,7 @@ public enum BuiltInSwordTypes implements SwordType {
         }
     };
 
-    public static final ResourceLocation BASE_ATTACK_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath("lookinsharp", "base_attack_damage");
-    public static final ResourceLocation BASE_ATTACK_SPEED_ID = ResourceLocation.fromNamespaceAndPath("lookinsharp", "base_attack_speed");
+    public static final Identifier BASE_ATTACK_DAMAGE_ID = Identifier.fromNamespaceAndPath("lookinsharp", "base_attack_damage");
+    public static final Identifier BASE_ATTACK_SPEED_ID = Identifier.fromNamespaceAndPath("lookinsharp", "base_attack_speed");
     public static final BuiltInSwordTypes[] VALUES = values();
 }

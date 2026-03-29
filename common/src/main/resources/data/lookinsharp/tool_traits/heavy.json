@@ -1,9 +1,10 @@
 {
   "weight": 1,
+  "color": 7041664,
   "attributeModifiers": {
     "mainhand": [
       {
-        "attribute": "minecraft:generic.movement_speed",
+        "attribute": "minecraft:movement_speed",
         "modifier": {
           "id": "lookinsharp:trait_movement_speed",
           "amount": -0.1,
@@ -11,7 +12,7 @@
         }
       },
       {
-        "attribute": "minecraft:generic.attack_damage",
+        "attribute": "minecraft:attack_damage",
         "modifier": {
           "id": "lookinsharp:trait_attack_damage",
           "amount": 0.2,

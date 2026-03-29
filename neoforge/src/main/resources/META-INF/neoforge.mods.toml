@@ -1,37 +1,37 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
+loaderVersion = "${neoforge_loader_version_range}"
 issueTrackerURL = "https://github.com/terrarium-earth/modid/issues"
-license = "Terrarium Licence"
+license = "${license}"
 
 [[mods]]
-modId = "lookinsharp"
+modId = "${mod_id}"
 version = "${version}"
-displayName = "Lookin' Sharp!"
+displayName = "${mod_name}"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/lookin-sharp"
-authors = "Jooosh, CodexAdrian, Flechazo"
-credits = ""
-description = ""
+authors = "${mod_author}"
+credits="${credits}"
+description = '''${description}'''
 
 #logoFile = ""
 
-[[dependencies.lookinsharp]]
+[[dependencies.${mod_id}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21,)"
+versionRange = "[${neoforge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.lookinsharp]]
+[[dependencies.${mod_id}]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.lookinsharp]]
+[[dependencies.${mod_id}]]
 modId = "oelib"
 mandatory = true
-versionRange = "[0.0.7,)"
+versionRange = "[0.2.3,)"
 ordering = "AFTER"
 side = "BOTH"
 

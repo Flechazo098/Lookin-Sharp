@@ -1,10 +1,6 @@
-{
-  "type": "lookinsharp:artifact_attachment",
-  "artifact": {
-    "item": "lookinsharp:weakening_artifact"
-  },
-  "addon": {
-    "item": "minecraft:fermented_spider_eye"
-  },
-  "result": "lookinsharp:weakness"
+﻿{
+    "type":  "lookinsharp:artifact_attachment",
+    "artifact":  "lookinsharp:weakening_artifact",
+    "addon":  "minecraft:fermented_spider_eye",
+    "result":  "lookinsharp:weakness"
 }

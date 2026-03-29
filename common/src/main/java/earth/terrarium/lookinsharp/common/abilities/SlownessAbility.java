@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class SlownessAbility implements ToolAbility {
     @Override
     public boolean onHit(DamageSource source, LivingEntity victim, float amount) {
-        victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 1));
+        victim.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 100, 1));
         return true;
     }
 

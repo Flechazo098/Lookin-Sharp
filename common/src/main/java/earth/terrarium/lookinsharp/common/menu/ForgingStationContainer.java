@@ -1,10 +1,12 @@
 package earth.terrarium.lookinsharp.common.menu;
 
 import earth.terrarium.lookinsharp.common.registry.ModBlocks;
+import earth.terrarium.lookinsharp.common.registry.ModDataComponents;
 import earth.terrarium.lookinsharp.common.registry.ModMenus;
-import earth.terrarium.lookinsharp.common.registry.ModRecipes;
+import earth.terrarium.lookinsharp.common.recipe.ForgingRecipeAccess;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,14 +14,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.crafting.SelectableRecipe;
+import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class ForgingStationContainer extends AbstractContainerMenu {
@@ -33,6 +35,7 @@ public class ForgingStationContainer extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private final Level level;
+    private SelectableRecipe.SingleInputSet<StonecutterRecipe> recipesForInput = SelectableRecipe.SingleInputSet.empty();
     private List<ItemStack> outputs = new ArrayList<>();
     private ItemStack input = ItemStack.EMPTY;
     long lastSoundTime;
@@ -77,7 +80,7 @@ public class ForgingStationContainer extends AbstractContainerMenu {
             @Override
             public void onTake(Player arg3, ItemStack arg22) {
                 applyOldComponents(arg22);
-                arg22.onCraftedBy(arg3.level(), arg3, arg22.getCount());
+                arg22.onCraftedBy(arg3, arg22.getCount());
 
                 ForgingStationContainer.this.resultContainer.awardUsedRecipes(
                         arg3, this.getRelevantItems()
@@ -147,6 +150,9 @@ public class ForgingStationContainer extends AbstractContainerMenu {
 
     @Override
     public boolean clickMenuButton(Player arg, int i) {
+        if (this.selectedRecipeIndex.get() == i) {
+            return false;
+        }
         if (this.isValidRecipeIndex(i)) {
             this.selectedRecipeIndex.set(i);
             this.setupResultSlot();
@@ -163,24 +169,28 @@ public class ForgingStationContainer extends AbstractContainerMenu {
         ItemStack itemStack = this.inputSlot.getItem();
         if (!itemStack.is(this.input.getItem())) {
             this.input = itemStack.copy();
-            this.setupRecipeList(arg, itemStack);
+            this.setupRecipeList(itemStack);
         }
     }
 
-    private void setupRecipeList(Container arg, ItemStack arg2) {
-        this.outputs.clear();
+    private void setupRecipeList(ItemStack arg2) {
         this.selectedRecipeIndex.set(-1);
         this.resultSlot.set(ItemStack.EMPTY);
+        this.outputs.clear();
 
         if (!arg2.isEmpty()) {
-            var input = new SingleRecipeInput(arg2);
-            this.outputs = this.level.getRecipeManager()
-                    .getRecipesFor(ModRecipes.FORGING.get(), input, this.level)
-                    .stream()
-                    .map(RecipeHolder::value)
-                    .flatMap(recipe -> recipe.getResults().stream())
-                    .collect(Collectors.toCollection(ArrayList::new));
+            this.recipesForInput = ((ForgingRecipeAccess) this.level.recipeAccess()).lookinsharp$forgingRecipes().selectByInput(arg2);
+        } else {
+            this.recipesForInput = SelectableRecipe.SingleInputSet.empty();
         }
+
+        ContextMap context = SlotDisplayContext.fromLevel(this.level);
+        this.outputs = this.recipesForInput.entries().stream()
+                .map(SelectableRecipe.SingleInputEntry::recipe)
+                .map(SelectableRecipe::optionDisplay)
+                .map(display -> display.resolveForFirstStack(context))
+                .filter(stack -> !stack.isEmpty())
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
     void setupResultSlot() {
@@ -224,23 +234,24 @@ public class ForgingStationContainer extends AbstractContainerMenu {
 
             if (i == 1) {
                 applyOldComponents(itemStack2);
-                item.onCraftedBy(itemStack2, arg.level(), arg);
+                item.onCraftedBy(itemStack2, arg);
                 if (!this.moveItemStackTo(itemStack2, INV_SLOT_START, USE_ROW_SLOT_END, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(itemStack2, itemStack);
-            } else if (i == 0
-                    ? !this.moveItemStackTo(itemStack2, INV_SLOT_START, USE_ROW_SLOT_END, false)
-                    : (this.level.getRecipeManager()
-                    .getRecipeFor(ModRecipes.FORGING.get(),
-                            new SingleRecipeInput(itemStack2),
-                            this.level)
-                    .isPresent()
-                    ? !this.moveItemStackTo(itemStack2, 0, 1, false)
-                    : (i >= INV_SLOT_START && i < INV_SLOT_END
-                    ? !this.moveItemStackTo(itemStack2, 29, 38, false)
-                    : i >= USE_ROW_SLOT_START && i < USE_ROW_SLOT_END
-                    && !this.moveItemStackTo(itemStack2, 2, 29, false)))) {
+            } else if (i == 0) {
+                if (!this.moveItemStackTo(itemStack2, INV_SLOT_START, USE_ROW_SLOT_END, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (((ForgingRecipeAccess) this.level.recipeAccess()).lookinsharp$forgingRecipes().acceptsInput(itemStack2)) {
+                if (!this.moveItemStackTo(itemStack2, INPUT_SLOT, RESULT_SLOT, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (i >= INV_SLOT_START && i < INV_SLOT_END) {
+                if (!this.moveItemStackTo(itemStack2, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (i >= USE_ROW_SLOT_START && i < USE_ROW_SLOT_END && !this.moveItemStackTo(itemStack2, INV_SLOT_START, INV_SLOT_END, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -254,6 +265,9 @@ public class ForgingStationContainer extends AbstractContainerMenu {
             }
 
             slot.onTake(arg, itemStack2);
+            if (i == RESULT_SLOT) {
+                arg.drop(itemStack2, false);
+            }
             this.broadcastChanges();
         }
 
@@ -270,7 +284,20 @@ public class ForgingStationContainer extends AbstractContainerMenu {
     public void applyOldComponents(ItemStack result) {
         ItemStack sourceItem = this.slots.getFirst().getItem();
         if (!sourceItem.isEmpty()) {
-            result.applyComponents(sourceItem.getComponents());
+            var rarity = sourceItem.get(ModDataComponents.TOOL_RARITY_ID.get());
+            if (rarity != null) {
+                result.set(ModDataComponents.TOOL_RARITY_ID.get(), rarity);
+            }
+
+            var trait = sourceItem.get(ModDataComponents.TOOL_TRAIT_ID.get());
+            if (trait != null) {
+                result.set(ModDataComponents.TOOL_TRAIT_ID.get(), trait);
+            }
+
+            var ability = sourceItem.get(ModDataComponents.TOOL_ABILITY.get());
+            if (ability != null) {
+                result.set(ModDataComponents.TOOL_ABILITY.get(), ability);
+            }
         }
     }
 }

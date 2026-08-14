@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import earth.terrarium.lookinsharp.common.menu.ForgingStationContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -16,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ForgingAnvilScreen extends net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<ForgingStationContainer> {
+public class ForgingAnvilScreen extends AbstractContainerScreen<ForgingStationContainer> {
     private static final Identifier SCROLLER_SPRITE = Identifier.withDefaultNamespace("container/stonecutter/scroller");
     private static final Identifier SCROLLER_DISABLED_SPRITE = Identifier.withDefaultNamespace("container/stonecutter/scroller_disabled");
     private static final Identifier RECIPE_SELECTED_SPRITE = Identifier.withDefaultNamespace("container/stonecutter/recipe_selected");
